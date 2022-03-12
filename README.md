@@ -16,7 +16,7 @@ Simply follow the instruction given on the screen!
 [Banjibear](https://github.com/BanjiBear)
 
 # To-do
-The assignment is still in the development phase, things done and to-be-done:  
+The assignment is still in the development phase
 - [x] main two while-loop
 - [x] int checkInputFormat(char str[1024]);
 - [x] void keyGeneration();
