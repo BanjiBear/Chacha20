@@ -10,6 +10,7 @@ cc chacha20.c -o chacha20
 ./chacha20
 ```
 Simply follow the instruction given on the screen!  
+***NOTE: Please make sure that the chacha20.c file is in the same directory as the terminalSize.py file***
 
 # Author
 [Banjibear](https://github.com/BanjiBear)
