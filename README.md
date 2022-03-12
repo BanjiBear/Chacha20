@@ -21,7 +21,7 @@ The assignment is still in the development phase, things done and to-be-done:
 - [x] int checkInputFormat(char str[1024]);
 - [x] void keyGeneration();
 - [x] void nonceGeneration();
-- [ ] Errors in settings(): The i will be regard as the second integer of the 2D array
+- [x] ~~Errors in settings(): The i will be regard as the second integer of the 2D array~~
 - [ ] void inputBlockConstruction();
 - [ ] void Chacha20();
 
