@@ -17,7 +17,7 @@ The assignment is still in the development phase, things done and to-be-done:
 
 # Some websites for personal reference
 - [ASCII Table](https://www.asciitable.com/)
-- [HEx to String](https://codebeautify.org/hex-string-converter)
+- [Hex to String](https://codebeautify.org/hex-string-converter)
 - [Convert an Integer to a String in C](https://www.delftstack.com/howto/c/how-to-convert-an-integer-to-a-string-in-c/) (Not used for now)
 - [String to Bianry](https://www.rapidtables.com/convert/number/string-to-binary.html)
 - [Bit-wise Operation in C](https://www.geeksforgeeks.org/bitwise-operators-in-c-cpp/)
