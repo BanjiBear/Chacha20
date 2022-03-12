@@ -2,6 +2,15 @@
 This repository stores the code for Chacha20 implementation written in C.  
 The code is written for COMP3334 Computer System Security assignment 1 at Hong Kong Polytechnic University.  
 
+# Installation and Execution
+Though the code is not done yet, it can still be executed. The current version is only executable on MAC OS.  
+To run the Chacha20, open the terminal and type
+```shell
+cc chacha20.c -o chacha20
+./chacha20
+```
+Simply follow the instruction given on the screen!  
+
 # Author
 [Banjibear](https://github.com/BanjiBear)
 
