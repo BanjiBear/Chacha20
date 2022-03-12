@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <ctype.h>								// For tolower()
+#include <ctype.h>                              // For tolower()
 
 
 // CHEN Yi pu
@@ -16,12 +16,12 @@ char * the512BitBlock[] = {"expa", "nd 3", "2-by", "te k"};
 char key[33] = {0}, nonce[9] = {0}, input[1024];;
 int plaintext[1024], textLength = 0, counter = 1;
 
-void settings();								// Initialize the system
-int checkInputFormat(char str[1024]);			// Check input format: only letters and spaces are allowed
-void keyGenerator();							// Generate the key and print in hex-format using %x
-void nonceGenerator();							// Generate the nonce and print in hex-format using %x
-void inputBlockConstruction();					// Construct the 512-bit block
-void Chacha20();								// The implementation of Chacha20
+void settings();                                // Initialize the system
+int checkInputFormat(char str[1024]);           // Check input format: only letters and spaces are allowed
+void keyGenerator();                            // Generate the key and print in hex-format using %x
+void nonceGenerator();                          // Generate the nonce and print in hex-format using %x
+void inputBlockConstruction();                  // Construct the 512-bit block
+void Chacha20();                                // The implementation of Chacha20
 
 int main(){
 
@@ -38,17 +38,17 @@ int main(){
 	}
 	input[strlen(input) - 1] = 0;
 	textLength = strlen(input);
-	//printf("%lu\n", strlen(input));			// For Debugging
+	//printf("%lu\n", strlen(input));           // For Debugging
 	for(int i = 0; i < strlen(input) - 1; i++){
 		input[i] = tolower(input[i]);
 	}
-	//printf("%s\n", input);					// For Debugging
+	//printf("%s\n", input);                    // For Debugging
 	while(1){
 		system("clear");
 		keyGenerator();
 		nonceGenerator();
 		printf("%s\n", Scheme);
-		//printf("%x\n", 10);					// Testing
+		//printf("%x\n", 10);                   // Testing
 		printf("Input                   : %s\n\n", input);
 		printf("------ Encryption ------\n");
 		printf("Input              (hex): ");
@@ -71,27 +71,27 @@ int main(){
 		inputBlockConstruction();
 		//Chacha20();
 
-		counter++;								// Next Encryption
+		counter++;                              // Next Encryption
 		main();
 	}
 }
 
 void settings(){
-	system("python3 terminalSize.py");			// Use the embedded python file to re-size the terminal window
+	system("python3 terminalSize.py");          // Use the embedded python file to re-size the terminal window
 	system("clear");
 }
 
 int checkInputFormat(char str[1024]){
-	//printf("%lu\n", strlen(str));				// For Debugging
-	//printf("%d\n", (int)(str[2]));			// For Debugging
+	//printf("%lu\n", strlen(str));	            // For Debugging
+	//printf("%d\n", (int)(str[2]));            // For Debugging
 	int length = 0;
 	for(int i = 0; i < strlen(str) - 1; i++){
-		//printf("%d\n", (int)(str[i]));		// For Debugging
-		if((int)(str[i]) == 32){length++;}		// space
-		else if((int)(str[i]) > 64 && (int)(str[i]) < 91){length++;}		// A to Z
-		else if((int)(str[i]) > 96 && (int)(str[i]) < 123){length++;}		// a to z
+		//printf("%d\n", (int)(str[i]));        // For Debugging
+		if((int)(str[i]) == 32){length++;}      // space
+		else if((int)(str[i]) > 64 && (int)(str[i]) < 91){length++;}        // A to Z
+		else if((int)(str[i]) > 96 && (int)(str[i]) < 123){length++;}       // a to z
 	}
-	//printf("length = %d\n", length);			// For Debugging
+	//printf("length = %d\n", length);	        // For Debugging
 	return length;
 }
 
