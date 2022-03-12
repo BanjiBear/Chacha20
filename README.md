@@ -13,7 +13,7 @@ Simply follow the instruction given on the screen!
 ***NOTE: Please make sure that the chacha20.c file is in the same directory as the terminalSize.py file***
 
 # Author
-[Banjibear](https://github.com/BanjiBear)
+[CHEN Yi pu(Tommy)](https://github.com/BanjiBear)
 
 # To-do
 The assignment is still in the development phase
