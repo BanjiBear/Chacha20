@@ -8,12 +8,10 @@
 // 19084858d
 // Assignment 1 Question 5
 
-#define NUMBER_OF_STRING 16
-#define MAX_STRING_SIZE 5
 // I managed to make all of the important variables to be global
 const char Scheme[128] = "Chacha20 Encryption Scheme";
-char * the512BitBlock[] = {"expa", "nd 3", "2-by", "te k"};
-char key[33] = {0}, nonce[9] = {0}, input[1024];;
+char * the512BitBlock[17] = {"expa", "nd 3", "2-by", "te k"};
+char key[33] = {0}, nonce[9] = {0}, input[1024];
 int plaintext[1024], textLength = 0, counter = 1;
 
 void settings();                                // Initialize the system
@@ -72,7 +70,8 @@ int main(){
 		//Chacha20();
 
 		counter++;                              // Next Encryption
-		main();
+		break;
+		//main();
 	}
 }
 
@@ -82,7 +81,7 @@ void settings(){
 }
 
 int checkInputFormat(char str[1024]){
-	//printf("%lu\n", strlen(str));	            // For Debugging
+	//printf("%lu\n", strlen(str));             // For Debugging
 	//printf("%d\n", (int)(str[2]));            // For Debugging
 	int length = 0;
 	for(int i = 0; i < strlen(str) - 1; i++){
@@ -91,7 +90,7 @@ int checkInputFormat(char str[1024]){
 		else if((int)(str[i]) > 64 && (int)(str[i]) < 91){length++;}        // A to Z
 		else if((int)(str[i]) > 96 && (int)(str[i]) < 123){length++;}       // a to z
 	}
-	//printf("length = %d\n", length);	        // For Debugging
+	//printf("length = %d\n", length);          // For Debugging
 	return length;
 }
 
@@ -108,12 +107,15 @@ void nonceGenerator(){
 }
 
 void inputBlockConstruction(){
+	char buffer[5] = {0};
 	// For debugging
 	/*
 	for(int i = 0; i < 4; i++){
 		printf("%s ", the512BitBlock[i]);
 	}
 	*/
+	for(int i = 0; i < 8; i++){                 // block 4 to 11, 8 key block
+	}
 }
 
 
