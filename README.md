@@ -22,8 +22,9 @@ The assignment is still in the development phase
 - [x] void keyGeneration();
 - [x] void nonceGeneration();
 - [x] ~~Errors in settings(): The i will be regard as the second integer of the 2D array~~
-- [ ] void inputBlockConstruction();
+- [ ] void inputBlockConstruction(); -> Then convert all char into decimal value
 - [ ] void Chacha20();
+- [ ] void quarterRound(A, B, C, D);
 
 # Some websites for personal reference
 - [ASCII Table](https://www.asciitable.com/)
