@@ -16,8 +16,8 @@ int plaintext[1024], textLength = 0, counter = 1;
 
 void settings();								// Initialize the system
 int checkInputFormat(char str[1024]);			// Check input format: only letters and spaces are allowed
-void keyGeneration();							// Generate the key and print in hex-format using %x
-void nonceGeneration();							// Generate the nonce and print in hex-format using %x
+void keyGenerator();							// Generate the key and print in hex-format using %x
+void nonceGenerator();							// Generate the nonce and print in hex-format using %x
 void inputBlockConstruction();					// Construct the 512-bit block
 void Chacha20();								// The implementation of Chacha20
 
@@ -42,8 +42,8 @@ int main(){
 	//printf("%s\n", input);					// For Debugging
 	while(1){
 		system("clear");
-		keyGeneration();
-		nonceGeneration();
+		keyGenerator();
+		nonceGenerator();
 		printf("%s\n", Scheme);
 		//printf("%x\n", 10);					// Testing
 		printf("Input                   : %s\n\n", input);
@@ -107,13 +107,13 @@ int checkInputFormat(char str[1024]){
 	return length;
 }
 
-void keyGeneration(){
+void keyGenerator(){
 	for(int i = 0; i < 32; i++){
 		key[i] = 'a' + (random() % 26);
 	}
 }
 
-void nonceGeneration(){
+void nonceGenerator(){
 	for(int i = 0; i < 8; i++){
 		nonce[i] = 'a' + (random() % 26);
 	}
