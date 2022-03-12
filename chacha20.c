@@ -8,9 +8,11 @@
 // 19084858d
 // Assignment 1 Question 5
 
+#define NUMBER_OF_STRING 16
+#define MAX_STRING_SIZE 5
 // I managed to make all of the important variables to be global
 const char Scheme[128] = "Chacha20 Encryption Scheme";
-char the512BitBlock[17][5];
+char * the512BitBlock[] = {"expa", "nd 3", "2-by", "te k"};
 char key[33] = {0}, nonce[9] = {0}, input[1024];;
 int plaintext[1024], textLength = 0, counter = 1;
 
@@ -23,6 +25,7 @@ void Chacha20();								// The implementation of Chacha20
 
 int main(){
 
+	settings();
 	printf("Please type in the plaintext to be encrypted\n(only letters and spaces are allowed, both uppercase and lowercase are fine): \n");
 	while(1){
 		fgets(input, 1024, stdin);
@@ -65,7 +68,8 @@ int main(){
 		}
 		printf("counter            (hex): %x\n", counter);
 
-		Chacha20();
+		inputBlockConstruction();
+		//Chacha20();
 
 		counter++;								// Next Encryption
 		main();
@@ -75,22 +79,6 @@ int main(){
 void settings(){
 	system("python3 terminalSize.py");			// Use the embedded python file to re-size the terminal window
 	system("clear");
-	for(int i = 0; i < 4; i++){
-		switch(i){
-			case 0:
-				the512BitBlock[i] = "expa";
-				break;
-			case 1:
-				the512BitBlock[i] = "nd 3";
-				break;
-			case 2:
-				the512BitBlock[i] = "2-by";
-				break;
-			case 3:
-				the512BitBlock[i] = "te k";
-				break;
-		}
-	}
 }
 
 int checkInputFormat(char str[1024]){
@@ -120,6 +108,12 @@ void nonceGenerator(){
 }
 
 void inputBlockConstruction(){
+	// For debugging
+	/*
+	for(int i = 0; i < 4; i++){
+		printf("%s ", the512BitBlock[i]);
+	}
+	*/
 }
 
 
