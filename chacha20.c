@@ -14,7 +14,7 @@ char * the512BitBlock[17] = {"expa", "nd 3", "2-by", "te k"};
 char key[33] = {0}, nonce[9] = {0}, input[1024];
 int plaintext[1024], textLength = 0, counter = 1;
 
-void settings();                                // Initialize the system
+void settings(int mode);                                // Initialize the system
 int checkInputFormat(char str[1024]);           // Check input format: only letters and spaces are allowed
 void keyGenerator();                            // Generate the key and print in hex-format using %x
 void nonceGenerator();                          // Generate the nonce and print in hex-format using %x
@@ -24,7 +24,7 @@ void QUARTERROUND();							// QUARTERROUND
 
 int main(){
 
-	settings();
+	settings(0);
 	printf("Please type in the plaintext to be encrypted\n(only letters and spaces are allowed, both uppercase and lowercase are fine): \n");
 	while(1){
 		fgets(input, 1024, stdin);
@@ -46,29 +46,10 @@ int main(){
 		system("clear");
 		keyGenerator();
 		nonceGenerator();
-		printf("%s\n", Scheme);
-		//printf("%x\n", 10);                   // Testing
-		printf("Input                   : %s\n\n", input);
-		printf("------ Encryption ------\n");
-		printf("Input              (hex): ");
-		for(int i = 0; i < textLength; i++){
-			printf("%x", (int)(input[i]));
-			if(i == textLength - 1) printf("\n");
-		}
-		printf("Key                (hex): ");
-		for(int i = 0; i < 32; i++){
-			printf("%x", (int)(key[i]));
-			if(i == 31) printf("\n");
-		}
-		printf("nonce              (hex): ");
-		for(int i = 0; i < 8; i++){
-			printf("%x", (int)(nonce[i]));
-			if(i == 7) printf("\n");
-		}
-		printf("counter            (hex): %x\n", counter);
+		settings(1);
 
 		inputBlockConstruction();
-		//Chacha20();
+		Chacha20();
 
 		counter++;                              // Next Encryption
 		break;
@@ -76,9 +57,35 @@ int main(){
 	}
 }
 
-void settings(){
-	system("python3 terminalSize.py");          // Use the embedded python file to re-size the terminal window
-	system("clear");
+void settings(int mode){
+	switch(mode){
+		case 0:
+			system("python3 terminalSize.py");          // Use the embedded python file to re-size the terminal window
+			system("clear");
+			break;
+		case 1:
+			printf("%s\n", Scheme);
+			//printf("%x\n", 10);                   // Testing
+			printf("Input                   : %s\n\n", input);
+			printf("------ Encryption ------\n");
+			printf("Input              (hex): ");
+			for(int i = 0; i < textLength; i++){
+				printf("%x", (int)(input[i]));
+				if(i == textLength - 1) printf("\n");
+			}
+			printf("Key                (hex): ");
+			for(int i = 0; i < 32; i++){
+				printf("%x", (int)(key[i]));
+				if(i == 31) printf("\n");
+			}
+			printf("nonce              (hex): ");
+			for(int i = 0; i < 8; i++){
+				printf("%x", (int)(nonce[i]));
+				if(i == 7) printf("\n");
+			}
+			printf("counter            (hex): %x\n", counter);
+			break;
+	}
 }
 
 int checkInputFormat(char str[1024]){
