@@ -22,8 +22,8 @@ The assignment is still in the development phase
 - [x] void keyGeneration();
 - [x] void nonceGeneration();
 - [x] ~~Errors in settings(): The i will be regard as the second integer of the 2D array~~
-- [ ] void inputBlockConstruction(); -> Then convert all char into decimal value
-- [ ] void Chacha20();
+- [x] void inputBlockConstruction(); -> Then convert all char into decimal value
+- [x] void Chacha20();
 - [ ] void quarterRound(A, B, C, D);
 
 ~~See if it is necessary to implement all trifle stuff in settings.  ~~

@@ -21,7 +21,7 @@ void keyGenerator();                            // Generate the key and print in
 void nonceGenerator();                          // Generate the nonce and print in hex-format using %x
 void inputBlockConstruction();                  // Construct the 512-bit block
 void Chacha20();                                // The implementation of Chacha20
-void QUARTERROUND();							// QUARTERROUND
+void QUARTERROUND();                            // QUARTERROUND
 
 int main(){
 
@@ -160,10 +160,16 @@ void Chacha20(){
 }
 
 void QUARTERROUND(char blockA[4], char blockB[4], char blockC[4], char blockD[4]){
-	prinf("%s %s %s %s\n", blockA, blockB, blockC, blockD);
+	//printf("%s %s %s %s\n", blockA, blockB, blockC, blockD);              // Testing
+	//printf("%d %d %d %d\n", (int)(blockA), (int)(blockB), (int)(blockC), (int)(blockD));
 	//a += b;
-	(int)(blockA) = (int)(blockA) + (int)(blockB);
-	prinf("%s %s %s %s\n", blockA, blockB, blockC, blockD);
+	int a = (int)(blockA), b = (int)(blockB);
+	while (b != 0){
+		int carry = a & b;
+		a = a ^ b; 
+		b = carry << 1;
+	}
+	//printf("%c\n", (char)(23));                                           // Testing
 }
 
 
