@@ -119,9 +119,8 @@ void nonceGenerator(){
 void inputBlockConstruction(){
 	char buffer[5] = {0};
 	int index = 0;
-	// For debugging
 	/*
-	for(int i = 0; i < 4; i++){
+	for(int i = 0; i < 16; i++){
 		printf("the512BitBlock = %s\n", the512BitBlock[i]);
 	}
 	*/
@@ -130,14 +129,8 @@ void inputBlockConstruction(){
 			buffer[j] = key[index];
 			index++;
 		}
-		//printf("buffer = %s\n", buffer);                                  // For Debugging
-		the512BitBlock[i] = buffer;
-		//printf("the512BitBlock = %s\n", the512BitBlock[i]);               // For Debugging
+		the512BitBlock[i] = strdup(buffer);                                 // https://stackoverflow.com/questions/3972453/array-of-strings-overwriting-each-other
 	}
-	for(int p = 0; p < 16; p++){
-		printf("the512BitBlock = %s\n", the512BitBlock[p]);
-	}
-	printf("\n");
 	index = 0;
 	for(int i = 14; i < 16; i++){                                           // block 14 and 15, 2 nonce block
 		for(int j = 0; j < 4; j++){
@@ -145,10 +138,9 @@ void inputBlockConstruction(){
 			index++;
 		}
 		//printf("buffer = %s\n", buffer);                                  // For Debugging
-		the512BitBlock[i] = buffer;
+		the512BitBlock[i] = strdup(buffer);                                 // https://stackoverflow.com/questions/3972453/array-of-strings-overwriting-each-other
 		//printf("the512BitBlock = %s\n", the512BitBlock[i]);               // For Debugging
 	}
-	index = 0;
 }
 
 void Chacha20(){
