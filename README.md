@@ -35,3 +35,4 @@ The assignment is still in the development phase
 - [String to Bianry](https://www.rapidtables.com/convert/number/string-to-binary.html)
 - [Bit-wise Operation in C](https://www.geeksforgeeks.org/bitwise-operators-in-c-cpp/)
 - [Char to Binary(string format)](https://stackoverflow.com/questions/7863499/conversion-of-char-to-binary-in-c) (Not used for now)
+- [Binary String to Decimal in C](https://www.javatpoint.com/binary-to-decimal-number-in-c)
