@@ -12,7 +12,7 @@
 // I managed to make all of the important variables to be global
 const char Scheme[128] = "Chacha20 Encryption Scheme";
 char * the512BitBlock[17] = {"expa", "nd 3", "2-by", "te k"};
-char * inputBlockBinaryFormat[17] = {0};
+char * the512BitBlockBinaryFormat[17] = {0};
 char key[33] = {0}, nonce[9] = {0}, input[1024];
 int plaintext[1024], textLength = 0, counter = 1;
 
@@ -165,8 +165,6 @@ void QUARTERROUND(char blockA[4], char blockB[4], char blockC[4], char blockD[4]
 	char buffer[33] = {0};
 	//printf("%s %s %s %s\n", blockA, blockB, blockC, blockD);              // Testing
 	//a += b;
-	int a = (int)(blockA), b = (int)(blockB);
-	// https://www.sanfoundry.com/c-program-perform-addition-operation-bitwise-operators/
 	//printf("%c\n", (char)(23));                                           // Testing
 
 	/* 
