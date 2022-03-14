@@ -26,7 +26,7 @@ The assignment is still in the development phase
 - [ ] void Chacha20();
 - [ ] void quarterRound(A, B, C, D);
 
-See if it is necessary to implement all trifle stuff in settings.  
+~~See if it is necessary to implement all trifle stuff in settings.  ~~
 
 # Some websites for personal reference
 - [ASCII Table](https://www.asciitable.com/)
