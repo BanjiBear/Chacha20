@@ -147,14 +147,23 @@ void inputBlockConstruction(){
 
 void Chacha20(){
 	// 20 rounds, 2 rounds per loop
-	//QUARTERROUND(block[0], block[4], block[8], block[12]);
-	//QUARTERROUND(block[0], block[4], block[8], block[12]);
-	//QUARTERROUND(block[0], block[4], block[8], block[12]);
-	//QUARTERROUND(block[0], block[4], block[8], block[12]);
-	//QUARTERROUND(block[0], block[4], block[8], block[12]);
-	//QUARTERROUND(block[0], block[4], block[8], block[12]);
-	//QUARTERROUND(block[0], block[4], block[8], block[12]);
-	//QUARTERROUND(block[0], block[4], block[8], block[12]);
+	// column
+	QUARTERROUND(the512BitBlock[0], the512BitBlock[4], the512BitBlock[8], the512BitBlock[12]);
+	//QUARTERROUND(the512BitBlock[1], the512BitBlock[5], the512BitBlock[9], the512BitBlock[13]);
+	//QUARTERROUND(the512BitBlock[2], the512BitBlock[6], the512BitBlock[10], the512BitBlock[14]);
+	//QUARTERROUND(the512BitBlock[3], the512BitBlock[7], the512BitBlock[11], the512BitBlock[15]);
+	// diagonal
+	//QUARTERROUND(the512BitBlock[0], the512BitBlock[5], the512BitBlock[10], the512BitBlock[15]);
+	//QUARTERROUND(the512BitBlock[1], the512BitBlock[6], the512BitBlock[11], the512BitBlock[12]);
+	//QUARTERROUND(the512BitBlock[2], the512BitBlock[7], the512BitBlock[8], the512BitBlock[13]);
+	//QUARTERROUND(the512BitBlock[3], the512BitBlock[4], the512BitBlock[9], the512BitBlock[14]);
+}
+
+void QUARTERROUND(char blockA[4], char blockB[4], char blockC[4], char blockD[4]){
+	prinf("%s %s %s %s\n", blockA, blockB, blockC, blockD);
+	//a += b;
+	(int)(blockA) = (int)(blockA) + (int)(blockB);
+	prinf("%s %s %s %s\n", blockA, blockB, blockC, blockD);
 }
 
 
