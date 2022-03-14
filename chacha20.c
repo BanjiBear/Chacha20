@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>                              // For tolower()
+#include <time.h>                               // For srand()
 
 
 // CHEN Yi pu
@@ -102,14 +103,16 @@ int checkInputFormat(char str[1024]){
 }
 
 void keyGenerator(){
+	srand (time(0));
 	for(int i = 0; i < 32; i++){
-		key[i] = 'a' + (random() % 26);
+		key[i] = 'a' + (rand() % 26);
 	}
 }
 
 void nonceGenerator(){
+	srand (rand());
 	for(int i = 0; i < 8; i++){
-		nonce[i] = 'a' + (random() % 26);
+		nonce[i] = 'a' + (rand() % 26);
 	}
 }
 
