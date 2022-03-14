@@ -134,6 +134,10 @@ void inputBlockConstruction(){
 		the512BitBlock[i] = buffer;
 		//printf("the512BitBlock = %s\n", the512BitBlock[i]);               // For Debugging
 	}
+	for(int p = 0; p < 16; p++){
+		printf("the512BitBlock = %s\n", the512BitBlock[p]);
+	}
+	printf("\n");
 	index = 0;
 	for(int i = 14; i < 16; i++){                                           // block 14 and 15, 2 nonce block
 		for(int j = 0; j < 4; j++){
