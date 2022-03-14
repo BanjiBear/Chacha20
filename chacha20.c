@@ -12,6 +12,7 @@
 // I managed to make all of the important variables to be global
 const char Scheme[128] = "Chacha20 Encryption Scheme";
 char * the512BitBlock[17] = {"expa", "nd 3", "2-by", "te k"};
+char * inputBlockBinaryFormat[17] = {0};
 char key[33] = {0}, nonce[9] = {0}, input[1024];
 int plaintext[1024], textLength = 0, counter = 1;
 
@@ -148,6 +149,7 @@ void inputBlockConstruction(){
 void Chacha20(){
 	// 20 rounds, 2 rounds per loop
 	// column
+	//printf("%c\n", the512BitBlock[0][1]);                                 // Testing
 	QUARTERROUND(the512BitBlock[0], the512BitBlock[4], the512BitBlock[8], the512BitBlock[12]);
 	//QUARTERROUND(the512BitBlock[1], the512BitBlock[5], the512BitBlock[9], the512BitBlock[13]);
 	//QUARTERROUND(the512BitBlock[2], the512BitBlock[6], the512BitBlock[10], the512BitBlock[14]);
@@ -160,16 +162,24 @@ void Chacha20(){
 }
 
 void QUARTERROUND(char blockA[4], char blockB[4], char blockC[4], char blockD[4]){
+	char buffer[33] = {0};
 	//printf("%s %s %s %s\n", blockA, blockB, blockC, blockD);              // Testing
-	//printf("%d %d %d %d\n", (int)(blockA), (int)(blockB), (int)(blockC), (int)(blockD));
 	//a += b;
 	int a = (int)(blockA), b = (int)(blockB);
-	while (b != 0){
-		int carry = a & b;
-		a = a ^ b; 
-		b = carry << 1;
-	}
+	// https://www.sanfoundry.com/c-program-perform-addition-operation-bitwise-operators/
 	//printf("%c\n", (char)(23));                                           // Testing
+
+	/* 
+	   https://stackoverflow.com/questions/7863499/conversion-of-char-to-binary-in-c
+	   https://www.geeksforgeeks.org/putchar-function-in-c/
+	*/
+	for(int i = 0; i < 4; i++){
+		for (int j = 7; j >= 0; --j){
+			putchar((blockA[i] & (1 << j)) ? '1' : '0' );
+		}
+		//putchar(' ');
+	}
+	putchar('\n');
 }
 
 
