@@ -14,7 +14,7 @@ char * the512BitBlock[17] = {"expa", "nd 3", "2-by", "te k"};
 char key[33] = {0}, nonce[9] = {0}, input[1024];
 int plaintext[1024], textLength = 0, counter = 1;
 
-void settings(int mode);                                // Initialize the system
+void settings(int mode);                        // Initialize the system
 int checkInputFormat(char str[1024]);           // Check input format: only letters and spaces are allowed
 void keyGenerator();                            // Generate the key and print in hex-format using %x
 void nonceGenerator();                          // Generate the nonce and print in hex-format using %x
@@ -47,7 +47,6 @@ int main(){
 		keyGenerator();
 		nonceGenerator();
 		settings(1);
-
 		inputBlockConstruction();
 		Chacha20();
 
@@ -60,12 +59,12 @@ int main(){
 void settings(int mode){
 	switch(mode){
 		case 0:
-			system("python3 terminalSize.py");          // Use the embedded python file to re-size the terminal window
+			system("python3 terminalSize.py");  // Use the embedded python file to re-size the terminal window
 			system("clear");
 			break;
 		case 1:
 			printf("%s\n", Scheme);
-			//printf("%x\n", 10);                   // Testing
+			//printf("%x\n", 10);               // Testing
 			printf("Input                   : %s\n\n", input);
 			printf("------ Encryption ------\n");
 			printf("Input              (hex): ");
@@ -123,21 +122,21 @@ void inputBlockConstruction(){
 		printf("the512BitBlock = %s\n", the512BitBlock[i]);
 	}
 	*/
-	for(int i = 4; i < 12; i++){                 // block 4 to 11, 8 key block
+	for(int i = 4; i < 12; i++){                                            // block 4 to 11, 8 key block
 		for(int j = 0; j < 4; j++){
 			buffer[j] = key[index];
 			index++;
 		}
-		//printf("buffer = %s\n", buffer);       // For Debugging
+		//printf("buffer = %s\n", buffer);                                  // For Debugging
 		the512BitBlock[i] = buffer;
 		//printf("the512BitBlock = %s\n", the512BitBlock[i]);               // For Debugging
 	}
-	for(int i = 14; i < 16; i++){                 // block 14 and 15, 2 nonce block
+	for(int i = 14; i < 16; i++){                                           // block 14 and 15, 2 nonce block
 		for(int j = 0; j < 4; j++){
 			buffer[j] = key[index];
 			index++;
 		}
-		//printf("buffer = %s\n", buffer);       // For Debugging
+		//printf("buffer = %s\n", buffer);                                  // For Debugging
 		the512BitBlock[i] = buffer;
 		//printf("the512BitBlock = %s\n", the512BitBlock[i]);               // For Debugging
 	}
