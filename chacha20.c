@@ -53,7 +53,6 @@ int main(){
 
 		counter++;                              // Next Encryption
 		break;
-		//main();
 	}
 }
 
@@ -121,7 +120,7 @@ void inputBlockConstruction(){
 	int index = 0;
 	/*
 	for(int i = 0; i < 16; i++){
-		printf("the512BitBlock = %s\n", the512BitBlock[i]);
+		printf("the512BitBlock[%d] = %s\n", i, the512BitBlock[i]);
 	}
 	*/
 	for(int i = 4; i < 12; i++){                                            // block 4 to 11, 8 key block
@@ -141,6 +140,9 @@ void inputBlockConstruction(){
 		the512BitBlock[i] = strdup(buffer);                                 // https://stackoverflow.com/questions/3972453/array-of-strings-overwriting-each-other
 		//printf("the512BitBlock = %s\n", the512BitBlock[i]);               // For Debugging
 	}
+	the512BitBlock[12] = "0000";
+	the512BitBlock[13] = "0001";
+	//printf("%d\n", atoi(the512BitBlock[13]));                             // Testing
 }
 
 void Chacha20(){
