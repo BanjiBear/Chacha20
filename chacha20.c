@@ -144,6 +144,9 @@ void inputBlockConstruction(){
 	the512BitBlock[12] = "0000";
 	the512BitBlock[13] = "0001";
 	//printf("%d\n", atoi(the512BitBlock[13]));                             // Testing
+	for(int i = 0; i < 16; i++){
+		printf("the512BitBlock[%d] = %s\n", i, the512BitBlock[i]);
+	}
 }
 
 void Chacha20(){
@@ -162,7 +165,6 @@ void Chacha20(){
 }
 
 void QUARTERROUND(char blockA[4], char blockB[4], char blockC[4], char blockD[4]){
-	char buffer[33] = {0};
 	//printf("%s %s %s %s\n", blockA, blockB, blockC, blockD);              // Testing
 	//a += b;
 	//printf("%c\n", (char)(23));                                           // Testing
@@ -171,13 +173,6 @@ void QUARTERROUND(char blockA[4], char blockB[4], char blockC[4], char blockD[4]
 	   https://stackoverflow.com/questions/7863499/conversion-of-char-to-binary-in-c
 	   https://www.geeksforgeeks.org/putchar-function-in-c/
 	*/
-	for(int i = 0; i < 4; i++){
-		for (int j = 7; j >= 0; --j){
-			putchar((blockA[i] & (1 << j)) ? '1' : '0' );
-		}
-		//putchar(' ');
-	}
-	putchar('\n');
 }
 
 
