@@ -131,15 +131,17 @@ void inputBlockConstruction(){
 		the512BitBlock[i] = buffer;
 		//printf("the512BitBlock = %s\n", the512BitBlock[i]);               // For Debugging
 	}
+	index = 0;
 	for(int i = 14; i < 16; i++){                                           // block 14 and 15, 2 nonce block
 		for(int j = 0; j < 4; j++){
-			buffer[j] = key[index];
+			buffer[j] = nonce[index];
 			index++;
 		}
 		//printf("buffer = %s\n", buffer);                                  // For Debugging
 		the512BitBlock[i] = buffer;
 		//printf("the512BitBlock = %s\n", the512BitBlock[i]);               // For Debugging
 	}
+	index = 0;
 }
 
 void Chacha20(){
