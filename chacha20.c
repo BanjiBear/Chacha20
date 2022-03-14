@@ -20,6 +20,7 @@ void keyGenerator();                            // Generate the key and print in
 void nonceGenerator();                          // Generate the nonce and print in hex-format using %x
 void inputBlockConstruction();                  // Construct the 512-bit block
 void Chacha20();                                // The implementation of Chacha20
+void QUARTERROUND();							// QUARTERROUND
 
 int main(){
 
@@ -108,14 +109,43 @@ void nonceGenerator(){
 
 void inputBlockConstruction(){
 	char buffer[5] = {0};
+	int index = 0;
 	// For debugging
 	/*
 	for(int i = 0; i < 4; i++){
-		printf("%s ", the512BitBlock[i]);
+		printf("the512BitBlock = %s\n", the512BitBlock[i]);
 	}
 	*/
-	for(int i = 0; i < 8; i++){                 // block 4 to 11, 8 key block
+	for(int i = 4; i < 12; i++){                 // block 4 to 11, 8 key block
+		for(int j = 0; j < 4; j++){
+			buffer[j] = key[index];
+			index++;
+		}
+		//printf("buffer = %s\n", buffer);       // For Debugging
+		the512BitBlock[i] = buffer;
+		//printf("the512BitBlock = %s\n", the512BitBlock[i]);               // For Debugging
 	}
+	for(int i = 14; i < 16; i++){                 // block 14 and 15, 2 nonce block
+		for(int j = 0; j < 4; j++){
+			buffer[j] = key[index];
+			index++;
+		}
+		//printf("buffer = %s\n", buffer);       // For Debugging
+		the512BitBlock[i] = buffer;
+		//printf("the512BitBlock = %s\n", the512BitBlock[i]);               // For Debugging
+	}
+}
+
+void Chacha20(){
+	// 20 rounds, 2 rounds per loop
+	//QUARTERROUND(block[0], block[4], block[8], block[12]);
+	//QUARTERROUND(block[0], block[4], block[8], block[12]);
+	//QUARTERROUND(block[0], block[4], block[8], block[12]);
+	//QUARTERROUND(block[0], block[4], block[8], block[12]);
+	//QUARTERROUND(block[0], block[4], block[8], block[12]);
+	//QUARTERROUND(block[0], block[4], block[8], block[12]);
+	//QUARTERROUND(block[0], block[4], block[8], block[12]);
+	//QUARTERROUND(block[0], block[4], block[8], block[12]);
 }
 
 
