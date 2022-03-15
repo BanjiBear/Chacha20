@@ -11,8 +11,7 @@
 
 // I managed to make all of the important variables to be global
 const char Scheme[128] = "Chacha20 Encryption Scheme";
-char * the512BitBlock[17] = {"expa", "nd 3", "2-by", "te k"};
-char * the512BitBlockBinaryFormat[17] = {0};
+char * the512BitBlock[17] = {"65787061", "6e642033", "322d6279", "7465206b"};
 char key[33] = {0}, nonce[9] = {0}, input[1024];
 int plaintext[1024], textLength = 0, counter = 1;
 
@@ -20,9 +19,10 @@ void settings(int mode);                        // Initialize the system
 int checkInputFormat(char str[1024]);           // Check input format: only letters and spaces are allowed
 void keyGenerator();                            // Generate the key and print in hex-format using %x
 void nonceGenerator();                          // Generate the nonce and print in hex-format using %x
-void inputBlockConstruction();                  // Construct the 512-bit block
+void inputBlockConstruction();                  // Construct the 512-bit block -> Calls toHex()
+void toHex(char block[4], int n);
 void Chacha20();                                // The implementation of Chacha20
-void QUARTERROUND();                            // QUARTERROUND
+void QUARTERROUND(char blockA[8], char blockB[8], char blockC[8], char blockD[8]);
 
 int main(){
 
@@ -141,12 +141,49 @@ void inputBlockConstruction(){
 		the512BitBlock[i] = strdup(buffer);                                 // https://stackoverflow.com/questions/3972453/array-of-strings-overwriting-each-other
 		//printf("the512BitBlock = %s\n", the512BitBlock[i]);               // For Debugging
 	}
-	the512BitBlock[12] = "0000";
-	the512BitBlock[13] = "0001";
+	the512BitBlock[12] = "00000000";
+	the512BitBlock[13] = "00000001";
 	//printf("%d\n", atoi(the512BitBlock[13]));                             // Testing
-	for(int i = 0; i < 16; i++){
-		printf("the512BitBlock[%d] = %s\n", i, the512BitBlock[i]);
+	for(int i = 4; i < 16; i++){
+		if(i == 12 || i == 13) continue;
+		toHex(the512BitBlock[i], i);
 	}
+}
+
+void toHex(char block[4], int n){
+	char buffer[9] = {0};
+	int index = 0;
+	for(int i = 0; i < 4; i++){
+		if(block[i] == 'a'){buffer[index] = '6'; buffer[index + 1] = '1';}
+		else if(block[i] == 'a'){buffer[index] = '6'; buffer[index + 1] = '1';}
+		else if(block[i] == 'b'){buffer[index] = '6'; buffer[index + 1] = '2';}
+		else if(block[i] == 'c'){buffer[index] = '6'; buffer[index + 1] = '3';}
+		else if(block[i] == 'd'){buffer[index] = '6'; buffer[index + 1] = '4';}
+		else if(block[i] == 'e'){buffer[index] = '6'; buffer[index + 1] = '5';}
+		else if(block[i] == 'f'){buffer[index] = '6'; buffer[index + 1] = '6';}
+		else if(block[i] == 'g'){buffer[index] = '6'; buffer[index + 1] = '7';}
+		else if(block[i] == 'h'){buffer[index] = '6'; buffer[index + 1] = '8';}
+		else if(block[i] == 'i'){buffer[index] = '6'; buffer[index + 1] = '9';}
+		else if(block[i] == 'j'){buffer[index] = '6'; buffer[index + 1] = 'A';}
+		else if(block[i] == 'k'){buffer[index] = '6'; buffer[index + 1] = 'B';}
+		else if(block[i] == 'l'){buffer[index] = '6'; buffer[index + 1] = 'C';}
+		else if(block[i] == 'm'){buffer[index] = '6'; buffer[index + 1] = 'D';}
+		else if(block[i] == 'n'){buffer[index] = '6'; buffer[index + 1] = 'E';}
+		else if(block[i] == 'o'){buffer[index] = '6'; buffer[index + 1] = 'F';}
+		else if(block[i] == 'p'){buffer[index] = '7'; buffer[index + 1] = '0';}
+		else if(block[i] == 'q'){buffer[index] = '7'; buffer[index + 1] = '1';}
+		else if(block[i] == 'r'){buffer[index] = '7'; buffer[index + 1] = '2';}
+		else if(block[i] == 's'){buffer[index] = '7'; buffer[index + 1] = '3';}
+		else if(block[i] == 't'){buffer[index] = '7'; buffer[index + 1] = '4';}
+		else if(block[i] == 'u'){buffer[index] = '7'; buffer[index + 1] = '5';}
+		else if(block[i] == 'v'){buffer[index] = '7'; buffer[index + 1] = '6';}
+		else if(block[i] == 'w'){buffer[index] = '7'; buffer[index + 1] = '7';}
+		else if(block[i] == 'x'){buffer[index] = '7'; buffer[index + 1] = '8';}
+		else if(block[i] == 'y'){buffer[index] = '7'; buffer[index + 1] = '9';}
+		else if(block[i] == 'z'){buffer[index] = '7'; buffer[index + 1] = 'A';}
+		index = index + 2;
+	}
+	the512BitBlock[n] = strdup(buffer);
 }
 
 void Chacha20(){
@@ -164,16 +201,24 @@ void Chacha20(){
 	//QUARTERROUND(the512BitBlock[3], the512BitBlock[4], the512BitBlock[9], the512BitBlock[14]);
 }
 
-void QUARTERROUND(char blockA[4], char blockB[4], char blockC[4], char blockD[4]){
+void QUARTERROUND(char blockA[8], char blockB[8], char blockC[8], char blockD[8]){
+	char buffer[9] = {0};
 	//printf("%s %s %s %s\n", blockA, blockB, blockC, blockD);              // Testing
-	//a += b;
 	//printf("%c\n", (char)(23));                                           // Testing
 
-	/* 
-	   https://stackoverflow.com/questions/7863499/conversion-of-char-to-binary-in-c
-	   https://www.geeksforgeeks.org/putchar-function-in-c/
+	/*
+		Not Used now!!
+		https://stackoverflow.com/questions/7863499/conversion-of-char-to-binary-in-c
+		https://www.geeksforgeeks.org/putchar-function-in-c/
 	*/
+
+	//a += b;
+	//printf("%s ", blockA);                                                // For debugging
+	for(int i = 7; i > -1; i--){
+		//printf("%c ", blockA[i]);                                         // For debugging
+	}
 }
+
 
 
 
