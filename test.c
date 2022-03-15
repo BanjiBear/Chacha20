@@ -5,7 +5,7 @@
 
 
 int main(){
-	char buffer[9] = {0}, key[5] = {0};
+	/*char buffer[9] = {0}, key[5] = {0};
 	int index = 0;
 	srand (time(0));
 	for(int i = 0; i < 4; i++){
@@ -43,4 +43,14 @@ int main(){
 	}
 	printf("%s\n", key);
 	printf("%s\n", buffer);
+	//printf("%d\n", buffer[4] - '0');*/
+
+	printf("%x\n", 3 ^ 2);
+	printf("%x\n", 12 ^ 6);
+	printf("%x\n", 7 ^ 7);
+	printf("%x\n", 13 ^ 6);
+	printf("%x\n", 13 ^ 5);
+	printf("%x\n", 15 ^ 7);
+	printf("%x\n", 9 ^ 4);
+	printf("%x\n", 14 ^ 7);
 }

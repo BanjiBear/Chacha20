@@ -22,7 +22,11 @@ void nonceGenerator();                          // Generate the nonce and print 
 void inputBlockConstruction();                  // Construct the 512-bit block -> Calls toHex()
 void toHex(char block[4], int n);
 void Chacha20();                                // The implementation of Chacha20
-void QUARTERROUND(char blockA[8], char blockB[8], char blockC[8], char blockD[8]);
+void QUARTERROUND(int A, int B, int C, int D);
+
+void binaryAddition(char blockA[8], char blockB[8]);
+void XOR(char blockD[8], char blockA[8]);
+void bitRotation(char blockD[8], int rotation);
 
 int main(){
 
@@ -190,7 +194,7 @@ void Chacha20(){
 	// 20 rounds, 2 rounds per loop
 	// column
 	//printf("%c\n", the512BitBlock[0][1]);                                 // Testing
-	QUARTERROUND(the512BitBlock[0], the512BitBlock[4], the512BitBlock[8], the512BitBlock[12]);
+	QUARTERROUND(0, 4, 8, 12);
 	//QUARTERROUND(the512BitBlock[1], the512BitBlock[5], the512BitBlock[9], the512BitBlock[13]);
 	//QUARTERROUND(the512BitBlock[2], the512BitBlock[6], the512BitBlock[10], the512BitBlock[14]);
 	//QUARTERROUND(the512BitBlock[3], the512BitBlock[7], the512BitBlock[11], the512BitBlock[15]);
@@ -201,24 +205,118 @@ void Chacha20(){
 	//QUARTERROUND(the512BitBlock[3], the512BitBlock[4], the512BitBlock[9], the512BitBlock[14]);
 }
 
-void QUARTERROUND(char blockA[8], char blockB[8], char blockC[8], char blockD[8]){
-	char buffer[9] = {0};
+void QUARTERROUND(int A, int B, int C, int D){
+	
 	//printf("%s %s %s %s\n", blockA, blockB, blockC, blockD);              // Testing
 	//printf("%c\n", (char)(23));                                           // Testing
 
+	//a += b;
+	binaryAddition(the512BitBlock[A], the512BitBlock[B]);
 	/*
 		Not Used now!!
 		https://stackoverflow.com/questions/7863499/conversion-of-char-to-binary-in-c
 		https://www.geeksforgeeks.org/putchar-function-in-c/
 	*/
 
-	//a += b;
-	//printf("%s ", blockA);                                                // For debugging
-	for(int i = 7; i > -1; i--){
-		//printf("%c ", blockA[i]);                                         // For debugging
-	}
+	//d ^= a;
+	XOR(the512BitBlock[D], the512BitBlock[A]);
+	//ROT_L32(d, 16);
+	bitRotation(the512BitBlock[D], 16);
 }
 
+void binaryAddition(char blockA[8], char blockB[8]){
+	char buffer[9] = {0};
+	int a = 0, b = 0, carry = 0;
+	//a += b;
+	//printf("blockA = %s\n", blockA);                                      // For debugging
+	//printf("blockB = %s\n", blockB);                                      // For debugging
+	for(int i = 7; i > -1; i--){
+		//printf("%c\n", blockA[i]);                                        // For debugging
+		if((int)(blockA[i]) > 47 && (int)(blockA[i]) < 58){/*printf("1\n");*/ a = blockA[i] - '0';} // https://stackoverflow.com/questions/5029840/convert-char-to-int-in-c-and-c
+		else if(blockA[i] == 'A'){/*printf("2\n");*/ a = 10;}
+		else if(blockA[i] == 'B'){/*printf("3\n");*/ a = 11;}
+		else if(blockA[i] == 'C'){/*printf("4\n");*/ a = 12;}
+		else if(blockA[i] == 'D'){/*printf("5\n");*/ a = 13;}
+		else if(blockA[i] == 'E'){/*printf("6\n");*/ a = 14;}
+		else if(blockA[i] == 'F'){/*printf("7\n");*/ a = 15;}
+		if((int)(blockB[i]) > 47 && (int)(blockB[i]) < 58){/*printf("8\n");*/ b = blockB[i] - '0';} // https://stackoverflow.com/questions/5029840/convert-char-to-int-in-c-and-c
+		else if(blockB[i] == 'A'){/*printf("9\n");*/ b = 10;}
+		else if(blockB[i] == 'B'){/*printf("10\n");*/ b = 11;}
+		else if(blockB[i] == 'C'){/*printf("11\n");*/ b = 12;}
+		else if(blockB[i] == 'D'){/*printf("12\n");*/ b = 13;}
+		else if(blockB[i] == 'E'){/*printf("13\n");*/ b = 14;}
+		else if(blockB[i] == 'F'){/*printf("14\n");*/ b = 15;}
+
+		a = a + b + carry;
+		/*printf("15\n");*/
+		if(a < 10){/*printf("16\n");*/ buffer[i] = a + '0';}                // https://www.delftstack.com/howto/c/convert-int-to-char/
+		else{
+			carry = a / 16;
+			if((a % 16) < 10){/*printf("17\n");*/ buffer[i] = (a % 16) + '0';}
+			else if((a % 16) == 10){/*printf("18\n");*/ buffer[i] = 'A';}
+			else if((a % 16) == 11){/*printf("19\n");*/ buffer[i] = 'B';}
+			else if((a % 16) == 12){/*printf("20\n");*/ buffer[i] = 'C';}
+			else if((a % 16) == 13){/*printf("21\n");*/ buffer[i] = 'D';}
+			else if((a % 16) == 14){/*printf("22\n");*/ buffer[i] = 'E';}
+			else if((a % 16) == 15){/*printf("23\n");*/ buffer[i] = 'F';}
+		}
+	}
+	for(int i = 0; i < 16; i++){
+		if(strcmp(blockA, the512BitBlock[i]) == 0){the512BitBlock[i] = strdup(buffer);}
+	}
+	//printf("buffer = %s\n", buffer);                                      // For debugging
+	//printf("blockA = %s\n", blockA);                                      // For debugging (Not available now)
+	//printf("blockB = %s\n", blockB);                                      // For debugging
+}
+
+void XOR(char blockD[8], char blockA[8]){
+	char buffer[9] = {0};
+	int d = 0, a = 0;
+	//d ^= a;
+	//printf("blockD = %s\n", blockD);                                      // For debugging
+	//printf("blockA = %s\n", blockA);                                      // For debugging
+	for(int i = 7; i > -1; i--){
+		//printf("%c\n", blockA[i]);                                        // For debugging
+		if((int)(blockD[i]) > 47 && (int)(blockD[i]) < 58){/*printf("1\n");*/ d = blockD[i] - '0';} // https://stackoverflow.com/questions/5029840/convert-char-to-int-in-c-and-c
+		else if(blockD[i] == 'A'){/*printf("2\n");*/ d = 10;}
+		else if(blockD[i] == 'B'){/*printf("3\n");*/ d = 11;}
+		else if(blockD[i] == 'C'){/*printf("4\n");*/ d = 12;}
+		else if(blockD[i] == 'D'){/*printf("5\n");*/ d = 13;}
+		else if(blockD[i] == 'E'){/*printf("6\n");*/ d = 14;}
+		else if(blockD[i] == 'F'){/*printf("7\n");*/ d = 15;}
+		if((int)(blockA[i]) > 47 && (int)(blockA[i]) < 58){/*printf("8\n");*/ a = blockA[i] - '0';} // https://stackoverflow.com/questions/5029840/convert-char-to-int-in-c-and-c
+		else if(blockA[i] == 'A'){/*printf("9\n");*/ a = 10;}
+		else if(blockA[i] == 'B'){/*printf("10\n");*/ a = 11;}
+		else if(blockA[i] == 'C'){/*printf("11\n");*/ a = 12;}
+		else if(blockA[i] == 'D'){/*printf("12\n");*/ a = 13;}
+		else if(blockA[i] == 'E'){/*printf("13\n");*/ a = 14;}
+		else if(blockA[i] == 'F'){/*printf("14\n");*/ a = 15;}
+
+		d = d ^ a;
+		/*printf("15\n");*/
+		if(d < 10){/*printf("16\n");*/ buffer[i] = a + '0';}                // https://www.delftstack.com/howto/c/convert-int-to-char/
+		else{
+			if(d == 10){/*printf("18\n");*/ buffer[i] = 'A';}
+			else if(d == 11){/*printf("19\n");*/ buffer[i] = 'B';}
+			else if(d == 12){/*printf("20\n");*/ buffer[i] = 'C';}
+			else if(d == 13){/*printf("21\n");*/ buffer[i] = 'D';}
+			else if(d == 14){/*printf("22\n");*/ buffer[i] = 'E';}
+			else if(d == 15){/*printf("23\n");*/ buffer[i] = 'F';}
+		}
+	}
+	for(int i = 0; i < 16; i++){
+		if(strcmp(blockD, the512BitBlock[i]) == 0){the512BitBlock[i] = strdup(buffer);}
+	}
+	//printf("buffer = %s\n", buffer);                                      // For debugging
+	//printf("blockD = %s\n", blockD);                                      // For debugging (Not available now)
+	//printf("blockA = %s\n", blockA);                                      // For debugging
+}
+
+void bitRotation(char blockD[8], int rotation){
+	for(int i = 0; i < 16; i++){
+		printf("the512BitBlock[%d] = %s\n", i, the512BitBlock[i]);
+	}
+}
 
 
 
