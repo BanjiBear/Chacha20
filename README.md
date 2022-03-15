@@ -36,7 +36,7 @@ The assignment is still in the development phase
 - ~~[Char to Binary(string format)](https://stackoverflow.com/questions/7863499/conversion-of-char-to-binary-in-c)~~
 - [String to Bianry](https://www.rapidtables.com/convert/number/string-to-binary.html)
 - [Hex to String](https://codebeautify.org/hex-string-converter)
-  
+# Tools
 - [XOR Calculator](https://xor.pw/#)
 - [Hex Calculator](https://www.calculator.net/hex-calculator.html?number1=79727269&c2op=%2B&number2=E0CCDBF2&calctype=op&x=76&y=29)
 - [Binary to Hex converter](https://www.rapidtables.com/convert/number/binary-to-hex.html)
