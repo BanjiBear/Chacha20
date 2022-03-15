@@ -24,7 +24,8 @@ The assignment is still in the development phase
 - [x] ~~Errors in settings(): The i will be regard as the second integer of the 2D array~~
 - [x] void inputBlockConstruction(); -> Then convert all char into decimal value
 - [x] void Chacha20();
-- [ ] void quarterRound(A, B, C, D);
+- [x] void quarterRound(A, B, C, D);
+- [ ] bitRotation() -> 7: Convert into binary, rotate and convert back (Think some better approach)
 
 ~~See if it is necessary to implement all trifle stuff in settings.~~
 
