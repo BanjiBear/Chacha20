@@ -329,6 +329,7 @@ void bitRotation(char blockD[8], int rotation){
 			index++;
 		}
 		for(int i = 0; i < lettersToBeMoved; i++){
+			// !!!!! No need to re-initialize index to 0 --> THINK!!!!
 			buffer[index] = blockD[i];
 			index++;
 		}
