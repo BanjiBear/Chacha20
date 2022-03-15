@@ -127,6 +127,7 @@ void inputBlockConstruction(){
 	for(int i = 0; i < 16; i++){
 		printf("the512BitBlock[%d] = %s\n", i, the512BitBlock[i]);
 	}
+	printf("\n");
 	*/
 	for(int i = 4; i < 12; i++){                                            // block 4 to 11, 8 key block
 		for(int j = 0; j < 4; j++){
@@ -211,6 +212,10 @@ void QUARTERROUND(int A, int B, int C, int D){
 	//printf("%c\n", (char)(23));                                           // Testing
 
 	//a += b;
+	for(int i = 0; i < 16; i++){
+		printf("the512BitBlock[%d] = %s\n", i, the512BitBlock[i]);
+	}
+	printf("\n");
 	binaryAddition(the512BitBlock[A], the512BitBlock[B]);
 	/*
 		Not Used now!!
@@ -219,17 +224,33 @@ void QUARTERROUND(int A, int B, int C, int D){
 	*/
 
 	//d ^= a;
+	for(int i = 0; i < 16; i++){
+		printf("the512BitBlock[%d] = %s\n", i, the512BitBlock[i]);
+	}
+	printf("\n");
 	XOR(the512BitBlock[D], the512BitBlock[A]);
 	//ROT_L32(d, 16);
+	for(int i = 0; i < 16; i++){
+		printf("the512BitBlock[%d] = %s\n", i, the512BitBlock[i]);
+	}
+	printf("\n");
 	bitRotation(the512BitBlock[D], 16);
 
+	for(int i = 0; i < 16; i++){
+		printf("the512BitBlock[%d] = %s\n", i, the512BitBlock[i]);
+	}
+	printf("\n");
 	binaryAddition(the512BitBlock[C], the512BitBlock[D]);
+	for(int i = 0; i < 16; i++){
+		printf("the512BitBlock[%d] = %s\n", i, the512BitBlock[i]);
+	}
+	printf("\n");
 	XOR(the512BitBlock[B], the512BitBlock[C]);
+	for(int i = 0; i < 16; i++){
+		printf("the512BitBlock[%d] = %s\n", i, the512BitBlock[i]);
+	}
+	printf("\n");
 	bitRotation(the512BitBlock[B], 12);
-
-	binaryAddition(the512BitBlock[A], the512BitBlock[B]);
-	XOR(the512BitBlock[D], the512BitBlock[A]);
-	bitRotation(the512BitBlock[D], 8);
 }
 
 void binaryAddition(char blockA[8], char blockB[8]){
@@ -323,12 +344,9 @@ void XOR(char blockD[8], char blockA[8]){
 void bitRotation(char blockD[8], int rotation){
 	char buffer[9] = {0};
 	int lettersToBeMoved = 0, index = 0;;
-	for(int i = 0; i < 16; i++){
-		printf("the512BitBlock[%d] = %s\n", i, the512BitBlock[i]);
-	}
 	if(rotation % 4 == 0){
 		lettersToBeMoved = rotation / 4;
-		printf("lettersToBeMoved = %d\n", lettersToBeMoved);
+		//printf("lettersToBeMoved = %d\n", lettersToBeMoved);
 		// e.g. CAE3D8CF, rotation = 16, lettersToBeMoved = 4
 		for(int i = lettersToBeMoved; i < 8; i++){
 			buffer[index] = blockD[i];
@@ -344,11 +362,7 @@ void bitRotation(char blockD[8], int rotation){
 	for(int i = 0; i < 16; i++){
 		if(strcmp(blockD, the512BitBlock[i]) == 0){the512BitBlock[i] = strdup(buffer);}
 	}
-	printf("\n");
-	printf("buffer = %s\n", buffer);
-	for(int i = 0; i < 16; i++){
-		printf("the512BitBlock[%d] = %s\n", i, the512BitBlock[i]);
-	}
+	//printf("buffer = %s\n", buffer);
 }
 
 
