@@ -212,10 +212,6 @@ void QUARTERROUND(int A, int B, int C, int D){
 	//printf("%c\n", (char)(23));                                           // Testing
 
 	//a += b;
-	for(int i = 0; i < 16; i++){
-		printf("the512BitBlock[%d] = %s\n", i, the512BitBlock[i]);
-	}
-	printf("\n");
 	binaryAddition(the512BitBlock[A], the512BitBlock[B]);
 	/*
 		Not Used now!!
@@ -224,32 +220,12 @@ void QUARTERROUND(int A, int B, int C, int D){
 	*/
 
 	//d ^= a;
-	for(int i = 0; i < 16; i++){
-		printf("the512BitBlock[%d] = %s\n", i, the512BitBlock[i]);
-	}
-	printf("\n");
 	XOR(the512BitBlock[D], the512BitBlock[A]);
 	//ROT_L32(d, 16);
-	for(int i = 0; i < 16; i++){
-		printf("the512BitBlock[%d] = %s\n", i, the512BitBlock[i]);
-	}
-	printf("\n");
 	bitRotation(the512BitBlock[D], 16);
 
-	for(int i = 0; i < 16; i++){
-		printf("the512BitBlock[%d] = %s\n", i, the512BitBlock[i]);
-	}
-	printf("\n");
 	binaryAddition(the512BitBlock[C], the512BitBlock[D]);
-	for(int i = 0; i < 16; i++){
-		printf("the512BitBlock[%d] = %s\n", i, the512BitBlock[i]);
-	}
-	printf("\n");
 	XOR(the512BitBlock[B], the512BitBlock[C]);
-	for(int i = 0; i < 16; i++){
-		printf("the512BitBlock[%d] = %s\n", i, the512BitBlock[i]);
-	}
-	printf("\n");
 	bitRotation(the512BitBlock[B], 12);
 }
 
@@ -305,7 +281,7 @@ void XOR(char blockD[8], char blockA[8]){
 	//printf("blockD = %s\n", blockD);                                      // For debugging
 	//printf("blockA = %s\n", blockA);                                      // For debugging
 	for(int i = 7; i > -1; i--){
-		//printf("%c\n", blockA[i]);                                        // For debugging
+		//printf("%c\n", blockD[i]);                                        // For debugging
 		if((int)(blockD[i]) > 47 && (int)(blockD[i]) < 58){/*printf("1\n");*/ d = blockD[i] - '0';} // https://stackoverflow.com/questions/5029840/convert-char-to-int-in-c-and-c
 		else if(blockD[i] == 'A'){/*printf("2\n");*/ d = 10;}
 		else if(blockD[i] == 'B'){/*printf("3\n");*/ d = 11;}
@@ -323,7 +299,7 @@ void XOR(char blockD[8], char blockA[8]){
 
 		d = d ^ a;
 		/*printf("15\n");*/
-		if(d < 10){/*printf("16\n");*/ buffer[i] = a + '0';}                // https://www.delftstack.com/howto/c/convert-int-to-char/
+		if(d < 10){/*printf("16\n");*/ buffer[i] = d + '0';}                // https://www.delftstack.com/howto/c/convert-int-to-char/
 		else{
 			if(d == 10){/*printf("18\n");*/ buffer[i] = 'A';}
 			else if(d == 11){/*printf("19\n");*/ buffer[i] = 'B';}
