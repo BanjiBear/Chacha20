@@ -192,18 +192,25 @@ void toHex(char block[4], int n){
 }
 
 void Chacha20(){
-	// 20 rounds, 2 rounds per loop
-	// column
 	//printf("%c\n", the512BitBlock[0][1]);                                 // Testing
-	QUARTERROUND(0, 4, 8, 12);
-	//QUARTERROUND(the512BitBlock[1], the512BitBlock[5], the512BitBlock[9], the512BitBlock[13]);
-	//QUARTERROUND(the512BitBlock[2], the512BitBlock[6], the512BitBlock[10], the512BitBlock[14]);
-	//QUARTERROUND(the512BitBlock[3], the512BitBlock[7], the512BitBlock[11], the512BitBlock[15]);
-	// diagonal
-	//QUARTERROUND(the512BitBlock[0], the512BitBlock[5], the512BitBlock[10], the512BitBlock[15]);
-	//QUARTERROUND(the512BitBlock[1], the512BitBlock[6], the512BitBlock[11], the512BitBlock[12]);
-	//QUARTERROUND(the512BitBlock[2], the512BitBlock[7], the512BitBlock[8], the512BitBlock[13]);
-	//QUARTERROUND(the512BitBlock[3], the512BitBlock[4], the512BitBlock[9], the512BitBlock[14]);
+	for (int i = 0; i < 10; i++){
+		// 20 rounds, 2 rounds per loop
+		// column
+		QUARTERROUND(0, 4, 8, 12);
+		QUARTERROUND(1, 5, 9, 13);
+		QUARTERROUND(2, 6, 10, 14);
+		QUARTERROUND(3, 7, 11, 15);
+		// diagonal
+		QUARTERROUND(0, 5, 10, 15);
+		QUARTERROUND(1, 6, 11, 12);
+		QUARTERROUND(2, 7, 8, 13);
+		QUARTERROUND(3, 4, 9, 14);
+
+		for(int i = 0; i < 16; i++){
+			printf("%s ", the512BitBlock[i]);
+		}
+		printf("\n");
+	}
 }
 
 void QUARTERROUND(int A, int B, int C, int D){
@@ -212,7 +219,7 @@ void QUARTERROUND(int A, int B, int C, int D){
 	//printf("%c\n", (char)(23));                                           // Testing
 
 	//a += b;
-	//binaryAddition(the512BitBlock[A], the512BitBlock[B]);
+	binaryAddition(the512BitBlock[A], the512BitBlock[B]);
 	/*
 		Not Used now!!
 		https://stackoverflow.com/questions/7863499/conversion-of-char-to-binary-in-c
@@ -220,20 +227,20 @@ void QUARTERROUND(int A, int B, int C, int D){
 	*/
 
 	//d ^= a;
-	//XOR(the512BitBlock[D], the512BitBlock[A]);
+	XOR(the512BitBlock[D], the512BitBlock[A]);
 	//ROT_L32(d, 16);
-	//bitRotation(the512BitBlock[D], 16);
+	bitRotation(the512BitBlock[D], 16);
 
-	//binaryAddition(the512BitBlock[C], the512BitBlock[D]);
-	//XOR(the512BitBlock[B], the512BitBlock[C]);
-	//bitRotation(the512BitBlock[B], 12);
+	binaryAddition(the512BitBlock[C], the512BitBlock[D]);
+	XOR(the512BitBlock[B], the512BitBlock[C]);
+	bitRotation(the512BitBlock[B], 12);
 
-	//binaryAddition(the512BitBlock[A], the512BitBlock[B]);
-	//XOR(the512BitBlock[D], the512BitBlock[A]);
-	//bitRotation(the512BitBlock[D], 8);
+	binaryAddition(the512BitBlock[A], the512BitBlock[B]);
+	XOR(the512BitBlock[D], the512BitBlock[A]);
+	bitRotation(the512BitBlock[D], 8);
 
-	//binaryAddition(the512BitBlock[C], the512BitBlock[D]);
-	//XOR(the512BitBlock[B], the512BitBlock[C]);
+	binaryAddition(the512BitBlock[C], the512BitBlock[D]);
+	XOR(the512BitBlock[B], the512BitBlock[C]);
 	bitRotation(the512BitBlock[B], 7);
 }
 
@@ -328,7 +335,8 @@ void XOR(char blockD[8], char blockA[8]){
 void bitRotation(char blockD[8], int rotation){
 	const char * hexToBinary[16] = {"0000", "0001", "0010", "0011", "0100", "0101", "0110", "0111", "1000", "1001", "1010", "1011", "1100", "1101", "1110", "1111"};
 	const char hex[16] = {"0123456789ABCDEF"};
-	char buffer[9] = {0}, binaryBuffer[33] = "", buffer2[33] = {0};
+	char buffer[9] = {0};
+	char binaryConversionBuffer[33] = "" /*For 0s and 1s*/, rotatedBuffer[33] = {0}; /*For rotation*/
 	int lettersToBeMoved = 0, index = 0;;
 	if(rotation % 4 == 0){
 		lettersToBeMoved = rotation / 4;
@@ -345,15 +353,43 @@ void bitRotation(char blockD[8], int rotation){
 		}
 	}
 	else{
-		printf("blockD = %s\n", blockD);
+		//printf("blockD = %s\n", blockD);
 		for(int i = 0; i < 8; i++){
 			for(int j = 0; j < 16; j++){
 				if(blockD[i] == hex[j]){
-					strcat(binaryBuffer, hexToBinary[j]);
+					strcat(binaryConversionBuffer, hexToBinary[j]);
 				}
 			}
 		}
-		printf("Binary Buffer = %s\n", binaryBuffer);
+		//printf("Binary Buffer = %s\n", binaryConversionBuffer);
+		// Rotate
+		// e.g. 01101111011001010111011001100101
+		for(int i = rotation; i < 32; i++){
+			rotatedBuffer[index] = binaryConversionBuffer[i];
+			index++;
+		}
+		for(int i = 0; i < rotation; i++){
+			// !!!!! No need to re-initialize index to 0 --> THINK!!!!
+			rotatedBuffer[index] = binaryConversionBuffer[i];
+			index++;
+		}
+		//printf("Rotated Buffer = %s\n", rotatedBuffer);
+		char temp[5] = {0};
+		index = 0;
+		for(int i = 0; i < 8; i++){
+			for(int j = 0; j < 4; j++){
+				temp[j] = rotatedBuffer[index];
+				index++;
+			}
+			//printf("temp = %s\n", temp);
+			for(int p = 0; p < 16; p++){
+				if(strcmp(temp, hexToBinary[p]) == 0){
+					buffer[i] = hex[p];
+					break;
+				}
+			}
+		}
+		//printf("buffer = %s\n", buffer);
 	}
 	for(int i = 0; i < 16; i++){
 		if(strcmp(blockD, the512BitBlock[i]) == 0){the512BitBlock[i] = strdup(buffer);}
