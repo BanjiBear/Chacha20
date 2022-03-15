@@ -251,7 +251,7 @@ void binaryAddition(char blockA[8], char blockB[8]){
 		/*printf("15\n");*/
 		if(a < 10){/*printf("16\n");*/ buffer[i] = a + '0';}                // https://www.delftstack.com/howto/c/convert-int-to-char/
 		else{
-			carry = a / 16;
+			carry = a / 16;                                                 // For the next iteration
 			if((a % 16) < 10){/*printf("17\n");*/ buffer[i] = (a % 16) + '0';}
 			else if((a % 16) == 10){/*printf("18\n");*/ buffer[i] = 'A';}
 			else if((a % 16) == 11){/*printf("19\n");*/ buffer[i] = 'B';}
