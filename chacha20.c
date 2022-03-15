@@ -326,7 +326,9 @@ void XOR(char blockD[8], char blockA[8]){
 }
 
 void bitRotation(char blockD[8], int rotation){
-	char buffer[9] = {0}, binaryBuffer[33] = "";
+	const char * hexToBinary[16] = {"0000", "0001", "0010", "0011", "0100", "0101", "0110", "0111", "1000", "1001", "1010", "1011", "1100", "1101", "1110", "1111"};
+	const char hex[16] = {"0123456789ABCDEF"};
+	char buffer[9] = {0}, binaryBuffer[33] = "", buffer2[33] = {0};
 	int lettersToBeMoved = 0, index = 0;;
 	if(rotation % 4 == 0){
 		lettersToBeMoved = rotation / 4;
@@ -345,55 +347,10 @@ void bitRotation(char blockD[8], int rotation){
 	else{
 		printf("blockD = %s\n", blockD);
 		for(int i = 0; i < 8; i++){
-			switch(blockD[i]){
-				case '0':
-					strcat(binaryBuffer, "0000");
-					break;
-				case '1':
-					strcat(binaryBuffer, "0001");
-					break;
-				case '2':
-					strcat(binaryBuffer, "0010");
-					break;
-				case '3':
-					strcat(binaryBuffer, "0011");
-					break;
-				case '4':
-					strcat(binaryBuffer, "0100");
-					break;
-				case '5':
-					strcat(binaryBuffer, "0101");
-					break;
-				case '6':
-					strcat(binaryBuffer, "0110");
-					break;
-				case '7':
-					strcat(binaryBuffer, "0111");
-					break;
-				case '8':
-					strcat(binaryBuffer, "1000");
-					break;
-				case '9':
-					strcat(binaryBuffer, "1001");
-					break;
-				case 'A':
-					strcat(binaryBuffer, "1010");
-					break;
-				case 'B':
-					strcat(binaryBuffer, "1011");
-					break;
-				case 'C':
-					strcat(binaryBuffer, "1100");
-					break;
-				case 'D':
-					strcat(binaryBuffer, "1101");
-					break;
-				case 'E':
-					strcat(binaryBuffer, "1110");
-					break;
-				case 'F':
-					strcat(binaryBuffer, "1111");
-					break;
+			for(int j = 0; j < 16; j++){
+				if(blockD[i] == hex[j]){
+					strcat(binaryBuffer, hexToBinary[j]);
+				}
 			}
 		}
 		printf("Binary Buffer = %s\n", binaryBuffer);
