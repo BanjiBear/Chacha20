@@ -45,6 +45,11 @@ int main(){
 	printf("%s\n", buffer);
 	//printf("%d\n", buffer[4] - '0');*/
 
-	printf("%x\n", 14 ^ 2);
-	printf("%d\n", 14 ^ 2);
+	//printf("%x\n", 14 ^ 2);
+	//printf("%d\n", 14 ^ 2);
+
+	char buffer[33] = {0};
+
+	for(int i = 0; i < 33; i++){
+	}
 }

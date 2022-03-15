@@ -212,7 +212,7 @@ void QUARTERROUND(int A, int B, int C, int D){
 	//printf("%c\n", (char)(23));                                           // Testing
 
 	//a += b;
-	binaryAddition(the512BitBlock[A], the512BitBlock[B]);
+	//binaryAddition(the512BitBlock[A], the512BitBlock[B]);
 	/*
 		Not Used now!!
 		https://stackoverflow.com/questions/7863499/conversion-of-char-to-binary-in-c
@@ -220,13 +220,21 @@ void QUARTERROUND(int A, int B, int C, int D){
 	*/
 
 	//d ^= a;
-	XOR(the512BitBlock[D], the512BitBlock[A]);
+	//XOR(the512BitBlock[D], the512BitBlock[A]);
 	//ROT_L32(d, 16);
-	bitRotation(the512BitBlock[D], 16);
+	//bitRotation(the512BitBlock[D], 16);
 
-	binaryAddition(the512BitBlock[C], the512BitBlock[D]);
-	XOR(the512BitBlock[B], the512BitBlock[C]);
-	bitRotation(the512BitBlock[B], 12);
+	//binaryAddition(the512BitBlock[C], the512BitBlock[D]);
+	//XOR(the512BitBlock[B], the512BitBlock[C]);
+	//bitRotation(the512BitBlock[B], 12);
+
+	//binaryAddition(the512BitBlock[A], the512BitBlock[B]);
+	//XOR(the512BitBlock[D], the512BitBlock[A]);
+	//bitRotation(the512BitBlock[D], 8);
+
+	//binaryAddition(the512BitBlock[C], the512BitBlock[D]);
+	//XOR(the512BitBlock[B], the512BitBlock[C]);
+	bitRotation(the512BitBlock[B], 7);
 }
 
 void binaryAddition(char blockA[8], char blockB[8]){
@@ -318,7 +326,7 @@ void XOR(char blockD[8], char blockA[8]){
 }
 
 void bitRotation(char blockD[8], int rotation){
-	char buffer[9] = {0};
+	char buffer[9] = {0}, binaryBuffer[33] = "";
 	int lettersToBeMoved = 0, index = 0;;
 	if(rotation % 4 == 0){
 		lettersToBeMoved = rotation / 4;
@@ -335,6 +343,60 @@ void bitRotation(char blockD[8], int rotation){
 		}
 	}
 	else{
+		printf("blockD = %s\n", blockD);
+		for(int i = 0; i < 8; i++){
+			switch(blockD[i]){
+				case '0':
+					strcat(binaryBuffer, "0000");
+					break;
+				case '1':
+					strcat(binaryBuffer, "0001");
+					break;
+				case '2':
+					strcat(binaryBuffer, "0010");
+					break;
+				case '3':
+					strcat(binaryBuffer, "0011");
+					break;
+				case '4':
+					strcat(binaryBuffer, "0100");
+					break;
+				case '5':
+					strcat(binaryBuffer, "0101");
+					break;
+				case '6':
+					strcat(binaryBuffer, "0110");
+					break;
+				case '7':
+					strcat(binaryBuffer, "0111");
+					break;
+				case '8':
+					strcat(binaryBuffer, "1000");
+					break;
+				case '9':
+					strcat(binaryBuffer, "1001");
+					break;
+				case 'A':
+					strcat(binaryBuffer, "1010");
+					break;
+				case 'B':
+					strcat(binaryBuffer, "1011");
+					break;
+				case 'C':
+					strcat(binaryBuffer, "1100");
+					break;
+				case 'D':
+					strcat(binaryBuffer, "1101");
+					break;
+				case 'E':
+					strcat(binaryBuffer, "1110");
+					break;
+				case 'F':
+					strcat(binaryBuffer, "1111");
+					break;
+			}
+		}
+		printf("Binary Buffer = %s\n", binaryBuffer);
 	}
 	for(int i = 0; i < 16; i++){
 		if(strcmp(blockD, the512BitBlock[i]) == 0){the512BitBlock[i] = strdup(buffer);}
