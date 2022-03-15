@@ -31,9 +31,11 @@ The assignment is still in the development phase
 
 # Some websites for personal reference
 - [ASCII Table](https://www.asciitable.com/)
-- [Hex to String](https://codebeautify.org/hex-string-converter)
-- [Convert an Integer to a String in C](https://www.delftstack.com/howto/c/how-to-convert-an-integer-to-a-string-in-c/) (Not used for now)
+- ~~[Convert an Integer to a String in C](https://www.delftstack.com/howto/c/how-to-convert-an-integer-to-a-string-in-c/) (Not used for now)~~
+- ~~[Bit-wise Operation in C](https://www.geeksforgeeks.org/bitwise-operators-in-c-cpp/)~~
+- **[Binary String to Decimal in C](https://www.javatpoint.com/binary-to-decimal-number-in-c)**
+- **[Char to Binary(string format)](https://stackoverflow.com/questions/7863499/conversion-of-char-to-binary-in-c)**
 - [String to Bianry](https://www.rapidtables.com/convert/number/string-to-binary.html)
-- [Bit-wise Operation in C](https://www.geeksforgeeks.org/bitwise-operators-in-c-cpp/)
-- [Char to Binary(string format)](https://stackoverflow.com/questions/7863499/conversion-of-char-to-binary-in-c) (Not used for now)
-- [Binary String to Decimal in C](https://www.javatpoint.com/binary-to-decimal-number-in-c)
+- [Hex to String](https://codebeautify.org/hex-string-converter)
+- [XOR Calculator](https://xor.pw/#)
+- [Hex Calculator](https://www.calculator.net/hex-calculator.html?number1=79727269&c2op=%2B&number2=E0CCDBF2&calctype=op&x=76&y=29)
