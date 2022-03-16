@@ -11,7 +11,7 @@
 
 // I managed to make all of the important variables to be global
 const char Scheme[128] = "Chacha20 Encryption Scheme";
-char * the512BitBlock[17] = {"65787061", "6e642033", "322d6279", "7465206b"};
+char * the512BitBlock[17] = {"65787061", "6E642033", "322D6279", "7465206B"};
 char key[33] = {0}, nonce[9] = {0}, input[1024];
 int plaintext[1024], textLength = 0, counter = 1;
 
@@ -24,9 +24,9 @@ void toHex(char block[4], int n);
 void Chacha20();                                // The implementation of Chacha20
 void QUARTERROUND(int A, int B, int C, int D);
 
-void binaryAddition(char blockA[8], char blockB[8]);
-void XOR(char blockD[8], char blockA[8]);
-void bitRotation(char blockD[8], int rotation);
+void binaryAddition(char blockA[8], char blockB[8], int A);
+void XOR(char blockD[8], char blockA[8], int D);
+void bitRotation(char blockD[8], int rotation, int D);
 
 int main(){
 
@@ -205,11 +205,6 @@ void Chacha20(){
 		QUARTERROUND(1, 6, 11, 12);
 		QUARTERROUND(2, 7, 8, 13);
 		QUARTERROUND(3, 4, 9, 14);
-
-		for(int i = 0; i < 16; i++){
-			printf("%s ", the512BitBlock[i]);
-		}
-		printf("\n");
 	}
 }
 
@@ -219,7 +214,7 @@ void QUARTERROUND(int A, int B, int C, int D){
 	//printf("%c\n", (char)(23));                                           // Testing
 
 	//a += b;
-	binaryAddition(the512BitBlock[A], the512BitBlock[B]);
+	binaryAddition(the512BitBlock[A], the512BitBlock[B], A);
 	/*
 		Not Used now!!
 		https://stackoverflow.com/questions/7863499/conversion-of-char-to-binary-in-c
@@ -227,24 +222,29 @@ void QUARTERROUND(int A, int B, int C, int D){
 	*/
 
 	//d ^= a;
-	XOR(the512BitBlock[D], the512BitBlock[A]);
+	XOR(the512BitBlock[D], the512BitBlock[A], D);
 	//ROT_L32(d, 16);
-	bitRotation(the512BitBlock[D], 16);
+	bitRotation(the512BitBlock[D], 16, D);
 
-	binaryAddition(the512BitBlock[C], the512BitBlock[D]);
-	XOR(the512BitBlock[B], the512BitBlock[C]);
-	bitRotation(the512BitBlock[B], 12);
+	binaryAddition(the512BitBlock[C], the512BitBlock[D], C);
+	XOR(the512BitBlock[B], the512BitBlock[C], B);
+	bitRotation(the512BitBlock[B], 12, B);
 
-	binaryAddition(the512BitBlock[A], the512BitBlock[B]);
-	XOR(the512BitBlock[D], the512BitBlock[A]);
-	bitRotation(the512BitBlock[D], 8);
+	binaryAddition(the512BitBlock[A], the512BitBlock[B], A);
+	XOR(the512BitBlock[D], the512BitBlock[A], D);
+	bitRotation(the512BitBlock[D], 8, D);
 
-	binaryAddition(the512BitBlock[C], the512BitBlock[D]);
-	XOR(the512BitBlock[B], the512BitBlock[C]);
-	bitRotation(the512BitBlock[B], 7);
+	binaryAddition(the512BitBlock[C], the512BitBlock[D], C);
+	XOR(the512BitBlock[B], the512BitBlock[C], B);
+	bitRotation(the512BitBlock[B], 7, B);
+
+	for(int i = 0; i < 16; i++){
+		printf("%s ", the512BitBlock[i]);
+	}
+	printf("\n");
 }
 
-void binaryAddition(char blockA[8], char blockB[8]){
+void binaryAddition(char blockA[8], char blockB[8], int A){
 	char buffer[9] = {0};
 	int a = 0, b = 0, carry = 0;
 	//a += b;
@@ -281,15 +281,13 @@ void binaryAddition(char blockA[8], char blockB[8]){
 			else if((a % 16) == 15){/*printf("23\n");*/ buffer[i] = 'F';}
 		}
 	}
-	for(int i = 0; i < 16; i++){
-		if(strcmp(blockA, the512BitBlock[i]) == 0){the512BitBlock[i] = strdup(buffer);}
-	}
+	the512BitBlock[A] = strdup(buffer);
 	//printf("buffer = %s\n", buffer);                                      // For debugging
 	//printf("blockA = %s\n", blockA);                                      // For debugging (Not available now)
 	//printf("blockB = %s\n", blockB);                                      // For debugging
 }
 
-void XOR(char blockD[8], char blockA[8]){
+void XOR(char blockD[8], char blockA[8], int D){
 	char buffer[9] = {0};
 	int d = 0, a = 0;
 	//d ^= a;
@@ -324,15 +322,13 @@ void XOR(char blockD[8], char blockA[8]){
 			else if(d == 15){/*printf("23\n");*/ buffer[i] = 'F';}
 		}
 	}
-	for(int i = 0; i < 16; i++){
-		if(strcmp(blockD, the512BitBlock[i]) == 0){the512BitBlock[i] = strdup(buffer);}
-	}
+	the512BitBlock[D] = strdup(buffer);
 	//printf("buffer = %s\n", buffer);                                      // For debugging
 	//printf("blockD = %s\n", blockD);                                      // For debugging (Not available now)
 	//printf("blockA = %s\n", blockA);                                      // For debugging
 }
 
-void bitRotation(char blockD[8], int rotation){
+void bitRotation(char blockD[8], int rotation, int D){
 	const char * hexToBinary[16] = {"0000", "0001", "0010", "0011", "0100", "0101", "0110", "0111", "1000", "1001", "1010", "1011", "1100", "1101", "1110", "1111"};
 	const char hex[16] = {"0123456789ABCDEF"};
 	char buffer[9] = {0};
@@ -391,9 +387,7 @@ void bitRotation(char blockD[8], int rotation){
 		}
 		//printf("buffer = %s\n", buffer);
 	}
-	for(int i = 0; i < 16; i++){
-		if(strcmp(blockD, the512BitBlock[i]) == 0){the512BitBlock[i] = strdup(buffer);}
-	}
+	the512BitBlock[D] = strdup(buffer);
 	//printf("buffer = %s\n", buffer);
 }
 
