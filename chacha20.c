@@ -13,8 +13,7 @@
 const char Scheme[128] = "Chacha20 Encryption Scheme";
 char key[33] = {0}, nonce[9] = {0}, input[1024], inputHex[2048] = {0};
 char * the512BitBlock[17] = {"65787061", "6E642033", "322D6279", "7465206B"};
-char * plaintext[512] = {0};                    // 1024 x 2 (One letter into 2 Hex) / 4 (4 Hex in a group)
-char * ciphertext[512] = {0};                   // 1024 x 2 (One letter into 2 Hex) / 4 (4 Hex in a group)
+char cipherSequence[129] = "";
 int textLength = 0, counter = 1;
 
 void settings(int mode);                        // Initialize the system
@@ -413,8 +412,15 @@ void bitRotation(char blockD[8], int rotation, int D){
 }
 
 void encryption(){
+	char buffer[9] = {0};
 	int decimal, index = 0;
 	for(int i = 0; i < textLength; i++){
+		if(input[i] == ' '){
+			inputHex[index] = '2';
+			inputHex[index + 1] = '0';
+			index = index + 2;
+			continue;
+		}
 		decimal = (int)(input[i]);
 		if(decimal > 111){
 			inputHex[index] = '7';
@@ -445,7 +451,48 @@ void encryption(){
 			}
 		}
 	}
-	printf("%s\n", inputHex);
+	//printf("%s\n", inputHex);
+
+	for(int i = 0; i < 16; i++){
+		strcat(cipherSequence, the512BitBlock[i]);
+	}
+	//printf("%s\n", cipherSequence);
+
+	index = strlen(cipherSequence) - 1;
+	int p, q;
+	for(int i = strlen(inputHex) - 1; i > -1; i--){
+		if((int)(inputHex[i]) > 47 && (int)(inputHex[i]) < 58){/*printf("1\n");*/ p = inputHex[i] - '0';} // https://stackoverflow.com/questions/5029840/convert-char-to-int-in-c-and-c
+		else if(inputHex[i] == 'A'){/*printf("2\n");*/ p = 10;}
+		else if(inputHex[i] == 'B'){/*printf("3\n");*/ p = 11;}
+		else if(inputHex[i] == 'C'){/*printf("4\n");*/ p = 12;}
+		else if(inputHex[i] == 'D'){/*printf("5\n");*/ p = 13;}
+		else if(inputHex[i] == 'E'){/*printf("6\n");*/ p = 14;}
+		else if(inputHex[i] == 'F'){/*printf("7\n");*/ p = 15;}
+		if((int)(cipherSequence[index]) > 47 && (int)(cipherSequence[index]) < 58){/*printf("8\n");*/ q = cipherSequence[index] - '0';} // https://stackoverflow.com/questions/5029840/convert-char-to-int-in-c-and-c
+		else if(cipherSequence[index] == 'A'){/*printf("9\n");*/ q = 10;}
+		else if(cipherSequence[index] == 'B'){/*printf("10\n");*/ q = 11;}
+		else if(cipherSequence[index] == 'C'){/*printf("11\n");*/ q = 12;}
+		else if(cipherSequence[index] == 'D'){/*printf("12\n");*/ q = 13;}
+		else if(cipherSequence[index] == 'E'){/*printf("13\n");*/ q = 14;}
+		else if(cipherSequence[index] == 'F'){/*printf("14\n");*/ q = 15;}
+		//printf("%d\n", p);
+		//printf("%d\n", q);
+		q = p ^ q;
+		//printf("%d\n", q);
+
+		if(q < 10){/*printf("16\n");*/ cipherSequence[index] = q + '0';} // https://www.delftstack.com/howto/c/convert-int-to-char/
+		else{
+			if(q == 10){/*printf("18\n");*/ cipherSequence[index] = 'A';}
+			else if(q == 11){/*printf("19\n");*/ cipherSequence[index] = 'B';}
+			else if(q == 12){/*printf("20\n");*/ cipherSequence[index] = 'C';}
+			else if(q == 13){/*printf("21\n");*/ cipherSequence[index] = 'D';}
+			else if(q == 14){/*printf("22\n");*/ cipherSequence[index] = 'E';}
+			else if(q == 15){/*printf("23\n");*/ cipherSequence[index] = 'F';}
+		}
+		index--;
+	}
+	//printf("%s\n", inputHex);
+	//printf("%s\n", cipherSequence);
 }
 
 
