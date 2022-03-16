@@ -11,4 +11,4 @@ import time
 import sys
 import os
 
-sys.stdout.write("\x1b[8;{rows};{cols}t".format(rows = 100, cols = 150))
+sys.stdout.write("\x1b[8;{rows};{cols}t".format(rows = 100, cols = 300))

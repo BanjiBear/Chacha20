@@ -11,8 +11,10 @@
 
 // I managed to make all of the important variables to be global
 const char Scheme[128] = "Chacha20 Encryption Scheme";
+char key[33] = {0}, nonce[9] = {0}, input[1024], inputHex[2048] = {0};
 char * the512BitBlock[17] = {"65787061", "6E642033", "322D6279", "7465206B"};
-char key[33] = {0}, nonce[9] = {0}, input[1024];
+char * plaintext[512] = {0};                    // 1024 x 2 (One letter into 2 Hex) / 4 (4 Hex in a group)
+char * ciphertext[512] = {0};                   // 1024 x 2 (One letter into 2 Hex) / 4 (4 Hex in a group)
 int textLength = 0, counter = 1;
 
 void settings(int mode);                        // Initialize the system
@@ -21,12 +23,14 @@ void keyGenerator();                            // Generate the key and print in
 void nonceGenerator();                          // Generate the nonce and print in hex-format using %x
 void inputBlockConstruction();                  // Construct the 512-bit block -> Calls toHex()
 void toHex(char block[4], int n);
+
 void Chacha20();                                // The implementation of Chacha20
 void QUARTERROUND(int A, int B, int C, int D);
-
 void binaryAddition(char blockA[8], char blockB[8], int A);
 void XOR(char blockD[8], char blockA[8], int D);
 void bitRotation(char blockD[8], int rotation, int D);
+
+void encryption();
 
 int main(){
 
@@ -55,6 +59,9 @@ int main(){
 		settings(1);
 		inputBlockConstruction();
 		Chacha20();
+		settings(2);
+
+		encryption();
 
 		counter++;                              // Next Encryption
 		/*
@@ -93,6 +100,13 @@ void settings(int mode){
 				if(i == 7) printf("\n");
 			}
 			printf("counter            (hex): %x\n", counter);
+			break;
+		case 2:
+			printf("Cipher Sequence    (hex): ");
+			for(int i = 0; i < 16; i++){
+				printf("%s", the512BitBlock[i]);
+			}
+			printf("\n");
 			break;
 	}
 }
@@ -243,10 +257,12 @@ void QUARTERROUND(int A, int B, int C, int D){
 	XOR(the512BitBlock[B], the512BitBlock[C], B);
 	bitRotation(the512BitBlock[B], 7, B);
 
+	/*
 	for(int i = 0; i < 16; i++){
 		printf("%s ", the512BitBlock[i]);
 	}
 	printf("\n");
+	*/
 }
 
 void binaryAddition(char blockA[8], char blockB[8], int A){
@@ -396,6 +412,41 @@ void bitRotation(char blockD[8], int rotation, int D){
 	//printf("buffer = %s\n", buffer);
 }
 
+void encryption(){
+	int decimal, index = 0;
+	for(int i = 0; i < textLength; i++){
+		decimal = (int)(input[i]);
+		if(decimal > 111){
+			inputHex[index] = '7';
+			index++;
+			//strcat(inputHex, "7");
+			decimal = decimal - 112;
+		}
+		else{
+			inputHex[index] = '6';
+			index++;
+			//strcat(inputHex, "6");
+			decimal = decimal - 96;
+		}
+
+		if(decimal < 10){
+			inputHex[index] = decimal + '0';
+			index++;
+			//strcat(inputHex, decimal + '0');
+		}
+		else{
+			switch(decimal){
+				case 10: inputHex[index] = 'A'; index++; break;
+				case 11: inputHex[index] = 'B'; index++; break;
+				case 12: inputHex[index] = 'C'; index++; break;
+				case 13: inputHex[index] = 'D'; index++; break;
+				case 14: inputHex[index] = 'E'; index++; break;
+				case 15: inputHex[index] = 'F'; index++; break;
+			}
+		}
+	}
+	printf("%s\n", inputHex);
+}
 
 
 
