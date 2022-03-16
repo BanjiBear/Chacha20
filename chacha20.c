@@ -57,6 +57,11 @@ int main(){
 		Chacha20();
 
 		counter++;                              // Next Encryption
+		/*
+		char iteration[9] = {0};
+		strcpy(iteration, "00000001");
+		binaryAddition(the512BitBlock[13], iteration, 13);
+		*/
 		break;
 	}
 }
