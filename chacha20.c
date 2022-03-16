@@ -13,7 +13,7 @@
 const char Scheme[128] = "Chacha20 Encryption Scheme";
 char * the512BitBlock[17] = {"65787061", "6E642033", "322D6279", "7465206B"};
 char key[33] = {0}, nonce[9] = {0}, input[1024];
-int plaintext[1024], textLength = 0, counter = 1;
+int textLength = 0, counter = 1;
 
 void settings(int mode);                        // Initialize the system
 int checkInputFormat(char str[1024]);           // Check input format: only letters and spaces are allowed
@@ -48,8 +48,8 @@ int main(){
 		input[i] = tolower(input[i]);
 	}
 	//printf("%s\n", input);                    // For Debugging
+	system("clear");
 	while(1){
-		system("clear");
 		keyGenerator();
 		nonceGenerator();
 		settings(1);
