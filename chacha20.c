@@ -12,7 +12,7 @@
 
 // I managed to make all of the important variables to be global
 const char Scheme[128] = "Chacha20 Encryption Scheme";
-const char * testCases[5] = {"My name is Tommy and I am a year three student", "Azamat can you please meet me after the lecture", "Action Code AFXCS kill the man in black", "ten tons of drugs arrived at harbor", "Q is discovered kill him at all cost"};
+const char * testCases[5] = {"My name is Tommy and I am a year three student", "Azamat can you please meet me after the lecture", "Action Code AFXCS kill the man in black", "ten tons of drugs have arrived at the harbor", "Q is discovered kill him at all cost"};
 char key[33] = {0}, nonce[9] = {0}, input[1024], inputHex[2048] = {0};
 char * the512BitBlock[17] = {"65787061", "6E642033", "322D6279", "7465206B"};
 char cipherSequence[129] = "";
