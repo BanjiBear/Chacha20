@@ -12,11 +12,11 @@
 
 // I managed to make all of the important variables to be global
 const char Scheme[128] = "Chacha20 Encryption Scheme";
-const char * testCases[5] = {"My name is Tommy and I am a year three student", "please meet me after the lecture", "Action Code AFXCS kill the man in black", "ten tons of drugs arrived at harbor", "Q is discovered kill him at all cost"};
+const char * testCases[5] = {"My name is Tommy and I am a year three student", "Azamat can you please meet me after the lecture", "Action Code AFXCS kill the man in black", "ten tons of drugs arrived at harbor", "Q is discovered kill him at all cost"};
 char key[33] = {0}, nonce[9] = {0}, input[1024], inputHex[2048] = {0};
 char * the512BitBlock[17] = {"65787061", "6E642033", "322D6279", "7465206B"};
 char cipherSequence[129] = "";
-int textLength = 0, counter = 1, modeBit;
+int textLength = 0, counter = 1, modeBit, printBit = 0;
 
 void getInput();
 void settings(int mode);                        // Initialize the system
@@ -34,6 +34,8 @@ void bitRotation(char blockD[8], int rotation, int D);
 
 void encryption();
 
+void printDetailOutput(int A, int B, int mode);
+
 int main(int argc, char *argv[]){
 
 	modeBit = atoi(argv[1]);
@@ -42,7 +44,7 @@ int main(int argc, char *argv[]){
 	
 	while(counter < 6){
 		
-		if(modeBit == 1){
+		if(modeBit == 1 || modeBit == 3){
 			getInput();
 			system("clear");
 		}
@@ -67,7 +69,7 @@ int main(int argc, char *argv[]){
 		settings(3);
 
 		counter++;                              // Next Encryption
-		if(modeBit == 1) break;
+		if(modeBit == 1 || modeBit == 3) break;
 		/*
 		char iteration[9] = {0};
 		strcpy(iteration, "00000001");
@@ -116,7 +118,7 @@ void settings(int mode){
 		case 1:
 			printf("%s\n", Scheme);
 			//printf("%x\n", 10);               // Testing
-			if(modeBit != 1) printf("Plaintext               : %s\n", testCases[counter - 1]);
+			if(modeBit == 2) printf("Plaintext               : %s\n", testCases[counter - 1]);
 			printf("Input                   : %s\n", input);
 			printf("------ Encryption ------\n");
 			printf("Input              (hex): ");
@@ -216,12 +218,14 @@ void inputBlockConstruction(){
 		if(i == 12 || i == 13) continue;
 		toHex(the512BitBlock[i], i);
 	}
-	/*
+	
+	printf("--Input 512-bit blocks--\n");
+	printf("block [0] to [15]  (hex): ");
 	for(int i = 0; i < 16; i++){
 		printf("%s ", the512BitBlock[i]);
 	}
 	printf("\n");
-	*/
+	
 }
 
 void toHex(char block[4], int n){
@@ -263,9 +267,13 @@ void toHex(char block[4], int n){
 void Chacha20(){
 	//printf("%c\n", the512BitBlock[0][1]);                                 // Testing
 	for (int i = 0; i < 10; i++){
+		if(modeBit == 3 && i == 0){
+			printf("\n");
+			printf("-------- Round %d --------\n", i + 1);
+		}
 		// 20 rounds, 2 rounds per loop
 		// column
-		QUARTERROUND(0, 4, 8, 12);
+		QUARTERROUND(0, 4, 8, 12); printBit = 1;
 		QUARTERROUND(1, 5, 9, 13);
 		QUARTERROUND(2, 6, 10, 14);
 		QUARTERROUND(3, 7, 11, 15);
@@ -283,7 +291,7 @@ void QUARTERROUND(int A, int B, int C, int D){
 	//printf("%c\n", (char)(23));                                           // Testing
 
 	//a += b;
-	binaryAddition(the512BitBlock[A], the512BitBlock[B], A);
+	binaryAddition(the512BitBlock[A], the512BitBlock[B], A); if(modeBit == 3 && printBit == 0){printDetailOutput(A, B, 1);}
 	/*
 		Not Used now!!
 		https://stackoverflow.com/questions/7863499/conversion-of-char-to-binary-in-c
@@ -291,28 +299,30 @@ void QUARTERROUND(int A, int B, int C, int D){
 	*/
 
 	//d ^= a;
-	XOR(the512BitBlock[D], the512BitBlock[A], D);
+	XOR(the512BitBlock[D], the512BitBlock[A], D); if(modeBit == 3 && printBit == 0){printDetailOutput(D, A, 2);}
 	//ROT_L32(d, 16);
-	bitRotation(the512BitBlock[D], 16, D);
+	bitRotation(the512BitBlock[D], 16, D); if(modeBit == 3 && printBit == 0){printDetailOutput(D, 16, 3); printf("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");}
 
-	binaryAddition(the512BitBlock[C], the512BitBlock[D], C);
-	XOR(the512BitBlock[B], the512BitBlock[C], B);
-	bitRotation(the512BitBlock[B], 12, B);
+	binaryAddition(the512BitBlock[C], the512BitBlock[D], C); if(modeBit == 3 && printBit == 0){printDetailOutput(C, D, 1);}
+	XOR(the512BitBlock[B], the512BitBlock[C], B); if(modeBit == 3 && printBit == 0){printDetailOutput(B, C, 2);}
+	bitRotation(the512BitBlock[B], 12, B); if(modeBit == 3 && printBit == 0){printDetailOutput(B, 12, 3); printf("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");}
 
-	binaryAddition(the512BitBlock[A], the512BitBlock[B], A);
-	XOR(the512BitBlock[D], the512BitBlock[A], D);
-	bitRotation(the512BitBlock[D], 8, D);
+	binaryAddition(the512BitBlock[A], the512BitBlock[B], A); if(modeBit == 3 && printBit == 0){printDetailOutput(A, B, 1);}
+	XOR(the512BitBlock[D], the512BitBlock[A], D); if(modeBit == 3 && printBit == 0){printDetailOutput(D, A, 2);}
+	bitRotation(the512BitBlock[D], 8, D); if(modeBit == 3 && printBit == 0){printDetailOutput(D, 8, 3); printf("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");}
 
-	binaryAddition(the512BitBlock[C], the512BitBlock[D], C);
-	XOR(the512BitBlock[B], the512BitBlock[C], B);
-	bitRotation(the512BitBlock[B], 7, B);
+	binaryAddition(the512BitBlock[C], the512BitBlock[D], C); if(modeBit == 3 && printBit == 0){printDetailOutput(C, D, 1);}
+	XOR(the512BitBlock[B], the512BitBlock[C], B); if(modeBit == 3 && printBit == 0){printDetailOutput(B, C, 2);}
+	bitRotation(the512BitBlock[B], 7, B); if(modeBit == 3 && printBit == 0){printDetailOutput(B, 7, 3); 	printf("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");}
 
-	/*
-	for(int i = 0; i < 16; i++){
-		printf("%s ", the512BitBlock[i]);
+	if(modeBit == 3 && printBit == 0){
+		printf("---- Round 1 results ----\n");
+		printf("block [0] to [15]  (hex): ");
+		for(int i = 0; i < 16; i++){
+			printf("%s ", the512BitBlock[i]);
+		}
+		printf("\n\n");
 	}
-	printf("\n");
-	*/
 }
 
 void binaryAddition(char blockA[8], char blockB[8], int A){
@@ -404,7 +414,7 @@ void bitRotation(char blockD[8], int rotation, int D){
 	const char hex[16] = {"0123456789ABCDEF"};
 	char buffer[9] = {0};
 	char binaryConversionBuffer[33] = "" /*For 0s and 1s*/, rotatedBuffer[33] = {0}; /*For rotation*/
-	int lettersToBeMoved = 0, index = 0;;
+	int lettersToBeMoved = 0, index = 0;
 	if(rotation % 4 == 0){
 		lettersToBeMoved = rotation / 4;
 		//printf("lettersToBeMoved = %d\n", lettersToBeMoved);
@@ -544,6 +554,32 @@ void encryption(){
 	}
 	//printf("%s\n", inputHex);
 	//printf("%s\n", cipherSequence);
+}
+
+void printDetailOutput(int A, int B, int mode){
+
+	switch(mode){
+		case 1:
+			printf("Binary Addition    (hex): ");
+			for(int i = 0; i < 16; i++){
+				printf("%s ", the512BitBlock[i]);
+			}
+			break;
+		case 2:
+			printf("XOR                (hex): ");
+			for(int i = 0; i < 16; i++){
+				printf("%s ", the512BitBlock[i]);
+			}
+			break;
+		case 3:
+			printf("Bit Rotation       (hex): ");
+			for(int i = 0; i < 16; i++){
+				printf("%s ", the512BitBlock[i]);
+			}
+			break;
+	}
+
+	printf("\n");
 }
 
 
