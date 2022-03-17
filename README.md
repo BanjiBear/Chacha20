@@ -25,7 +25,7 @@ The assignment is still in the development phase
 - [x] void inputBlockConstruction(); -> Then convert all char into decimal value
 - [x] void Chacha20();
 - [x] void quarterRound(A, B, C, D);
-- [x] bitRotation() -> 7: Convert into binary, rotate and convert back (Think some better approach)
+- [x] bitRotation() -> 7: Convert into binary, rotate and convert back ~~(Think some better approach)~~
 - [x] counter++
 - [x] 5 test cases
 - [ ] ~~detail output text file, input output text file~~
