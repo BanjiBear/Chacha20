@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <ctype.h>                              // For tolower()
 #include <time.h>                               // For srand()
+#include <unistd.h>                             // For sleep()
 
 
 // CHEN Yi pu
@@ -11,11 +12,13 @@
 
 // I managed to make all of the important variables to be global
 const char Scheme[128] = "Chacha20 Encryption Scheme";
+const char * testCases[5] = {"My name is Tommy and I am a year three student", "please meet me after the lecture", "Action Code AFXCS kill the man in black", "ten tons of drugs arrived at harbor", "Q is discovered kill him at all cost"};
 char key[33] = {0}, nonce[9] = {0}, input[1024], inputHex[2048] = {0};
 char * the512BitBlock[17] = {"65787061", "6E642033", "322D6279", "7465206B"};
 char cipherSequence[129] = "";
 int textLength = 0, counter = 1;
 
+void getInput();
 void settings(int mode);                        // Initialize the system
 int checkInputFormat(char str[1024]);           // Check input format: only letters and spaces are allowed
 void keyGenerator();                            // Generate the key and print in hex-format using %x
@@ -33,7 +36,49 @@ void encryption();
 
 int main(){
 
-	settings(0);
+	if(counter == 1) settings(0);
+	
+	while(counter < 6){
+		
+		//getInput();
+		strcpy(input, testCases[counter - 1]);
+		textLength = strlen(input);
+		//printf("%lu\n", strlen(input));           // For Debugging
+		for(int i = 0; i < strlen(input) - 1; i++){
+			input[i] = tolower(input[i]);
+		}
+
+		keyGenerator();
+		nonceGenerator();
+		settings(1);
+		inputBlockConstruction();
+		Chacha20();
+		settings(2);
+
+		encryption();
+		settings(3);
+
+		counter++;                              // Next Encryption
+		/*
+		char iteration[9] = {0};
+		strcpy(iteration, "00000001");
+		binaryAddition(the512BitBlock[13], iteration, 13);
+		*/
+		for(int i = 0; i < 1024; i++){input[i] = 0;}
+		for(int i = 0; i < 2048; i++){inputHex[i] = 0;}
+		for(int i = 0; i < 129; i++){cipherSequence[i] = 0;}
+		for(int i = 4; i < 16; i++){the512BitBlock[i] = 0;}
+		the512BitBlock[0] = "65787061";
+		the512BitBlock[1] = "6E642033";
+		the512BitBlock[2] = "322D6279";
+		the512BitBlock[3] = "7465206B";
+
+		sleep(2);
+		main();
+	}
+}
+
+void getInput(){
 	printf("Please type in the plaintext to be encrypted\n(only letters and spaces are allowed, both uppercase and lowercase are fine): \n");
 	while(1){
 		fgets(input, 1024, stdin);
@@ -51,25 +96,7 @@ int main(){
 		input[i] = tolower(input[i]);
 	}
 	//printf("%s\n", input);                    // For Debugging
-	system("clear");
-	while(1){
-		keyGenerator();
-		nonceGenerator();
-		settings(1);
-		inputBlockConstruction();
-		Chacha20();
-		settings(2);
-
-		encryption();
-
-		counter++;                              // Next Encryption
-		/*
-		char iteration[9] = {0};
-		strcpy(iteration, "00000001");
-		binaryAddition(the512BitBlock[13], iteration, 13);
-		*/
-		break;
-	}
+	//system("clear");
 }
 
 void settings(int mode){
@@ -81,23 +108,23 @@ void settings(int mode){
 		case 1:
 			printf("%s\n", Scheme);
 			//printf("%x\n", 10);               // Testing
-			printf("Input                   : %s\n\n", input);
+			printf("Input                   : %s\n", input);
 			printf("------ Encryption ------\n");
 			printf("Input              (hex): ");
 			for(int i = 0; i < textLength; i++){
 				printf("%x", (int)(input[i]));
-				if(i == textLength - 1) printf("\n");
 			}
+			printf("\n");
 			printf("Key                (hex): ");
 			for(int i = 0; i < 32; i++){
 				printf("%x", (int)(key[i]));
-				if(i == 31) printf("\n");
 			}
+			printf("\n");
 			printf("nonce              (hex): ");
 			for(int i = 0; i < 8; i++){
 				printf("%x", (int)(nonce[i]));
-				if(i == 7) printf("\n");
 			}
+			printf("\n");
 			printf("counter            (hex): %x\n", counter);
 			break;
 		case 2:
@@ -106,6 +133,12 @@ void settings(int mode){
 				printf("%s", the512BitBlock[i]);
 			}
 			printf("\n");
+			break;
+		case 3:
+			printf("\n");
+			printf("Ciphertext         (hex): ");
+			printf("%s\n", cipherSequence);
+			printf("------------------------\n\n");
 			break;
 	}
 }
@@ -141,12 +174,6 @@ void nonceGenerator(){
 void inputBlockConstruction(){
 	char buffer[5] = {0};
 	int index = 0;
-	/*
-	for(int i = 0; i < 16; i++){
-		printf("the512BitBlock[%d] = %s\n", i, the512BitBlock[i]);
-	}
-	printf("\n");
-	*/
 	for(int i = 4; i < 12; i++){                                            // block 4 to 11, 8 key block
 		for(int j = 0; j < 4; j++){
 			buffer[j] = key[index];
@@ -166,11 +193,26 @@ void inputBlockConstruction(){
 	}
 	the512BitBlock[12] = "00000000";
 	the512BitBlock[13] = "00000001";
+	for(int i = 0; i < counter - 1; i++){
+		binaryAddition(the512BitBlock[13], "00000001", 13);
+	}
+	/*
+	for(int i = 0; i < 16; i++){
+		printf("%s ", the512BitBlock[i]);
+	}
+	printf("\n");
+	*/
 	//printf("%d\n", atoi(the512BitBlock[13]));                             // Testing
 	for(int i = 4; i < 16; i++){
 		if(i == 12 || i == 13) continue;
 		toHex(the512BitBlock[i], i);
 	}
+	/*
+	for(int i = 0; i < 16; i++){
+		printf("%s ", the512BitBlock[i]);
+	}
+	printf("\n");
+	*/
 }
 
 void toHex(char block[4], int n){

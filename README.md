@@ -26,11 +26,11 @@ The assignment is still in the development phase
 - [x] void Chacha20();
 - [x] void quarterRound(A, B, C, D);
 - [x] bitRotation() -> 7: Convert into binary, rotate and convert back (Think some better approach)
-- [ ] counter++
-- [ ] 5 test cases
-- [ ] detail output text file, input output text file
+- [x] counter++
+- [x] 5 test cases
+- [ ] ~~detail output text file, input output text file~~
 
-~~See if it is necessary to implement all trifle stuff in settings.~~
+- [x] See if it is necessary to implement all trifle stuff in settings.
 
 # Some websites for personal reference
 - [ASCII Table](https://www.asciitable.com/)
