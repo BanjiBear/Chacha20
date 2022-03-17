@@ -108,6 +108,7 @@ void settings(int mode){
 		case 1:
 			printf("%s\n", Scheme);
 			//printf("%x\n", 10);               // Testing
+			printf("Plaintext               : %s\n", testCases[counter - 1]);
 			printf("Input                   : %s\n", input);
 			printf("------ Encryption ------\n");
 			printf("Input              (hex): ");
