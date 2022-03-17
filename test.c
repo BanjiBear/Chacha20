@@ -4,7 +4,7 @@
 #include <time.h>                               // For srand()
 
 
-int main(){
+int main(int argc, char *argv[]){
 	/*char buffer[9] = {0}, key[5] = {0};
 	int index = 0;
 	srand (time(0));
@@ -48,5 +48,7 @@ int main(){
 	//printf("%x\n", 14 ^ 2);
 	//printf("%d\n", 14 ^ 2);
 
-	printf("%c\n", '9' + 2);
+	//printf("%c\n", '9' + 2);
+
+	printf("%d\n", atoi(argv[1]));
 }

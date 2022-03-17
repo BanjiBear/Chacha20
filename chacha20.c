@@ -16,7 +16,7 @@ const char * testCases[5] = {"My name is Tommy and I am a year three student", "
 char key[33] = {0}, nonce[9] = {0}, input[1024], inputHex[2048] = {0};
 char * the512BitBlock[17] = {"65787061", "6E642033", "322D6279", "7465206B"};
 char cipherSequence[129] = "";
-int textLength = 0, counter = 1;
+int textLength = 0, counter = 1, modeBit;
 
 void getInput();
 void settings(int mode);                        // Initialize the system
@@ -34,19 +34,27 @@ void bitRotation(char blockD[8], int rotation, int D);
 
 void encryption();
 
-int main(){
+int main(int argc, char *argv[]){
 
+	modeBit = atoi(argv[1]);
+	//printf("%d\n", modeBit);
 	if(counter == 1) settings(0);
 	
 	while(counter < 6){
 		
-		//getInput();
-		strcpy(input, testCases[counter - 1]);
-		textLength = strlen(input);
-		//printf("%lu\n", strlen(input));           // For Debugging
-		for(int i = 0; i < strlen(input) - 1; i++){
-			input[i] = tolower(input[i]);
+		if(modeBit == 1){
+			getInput();
+			system("clear");
 		}
+		else if(modeBit == 2){
+			strcpy(input, testCases[counter - 1]);
+			textLength = strlen(input);
+			//printf("%lu\n", strlen(input));           // For Debugging
+			for(int i = 0; i < strlen(input) - 1; i++){
+				input[i] = tolower(input[i]);
+			}
+		}
+		else break;
 
 		keyGenerator();
 		nonceGenerator();
@@ -59,6 +67,7 @@ int main(){
 		settings(3);
 
 		counter++;                              // Next Encryption
+		if(modeBit == 1) break;
 		/*
 		char iteration[9] = {0};
 		strcpy(iteration, "00000001");
@@ -74,7 +83,6 @@ int main(){
 		the512BitBlock[3] = "7465206B";
 
 		sleep(2);
-		main();
 	}
 }
 
@@ -108,7 +116,7 @@ void settings(int mode){
 		case 1:
 			printf("%s\n", Scheme);
 			//printf("%x\n", 10);               // Testing
-			printf("Plaintext               : %s\n", testCases[counter - 1]);
+			if(modeBit != 1) printf("Plaintext               : %s\n", testCases[counter - 1]);
 			printf("Input                   : %s\n", input);
 			printf("------ Encryption ------\n");
 			printf("Input              (hex): ");
