@@ -29,7 +29,6 @@ The assignment is still in the development phase
 - [x] counter++
 - [x] 5 test cases
 - [ ] ~~detail output text file, input output text file~~
-
 - [x] See if it is necessary to implement all trifle stuff in settings.
 
 # Some websites for personal reference
