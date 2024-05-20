@@ -1,34 +1,38 @@
 # Chacha20
-This repository stores the code for Chacha20 implementation written in C.  
-Chacha20 is a Encryption Scheme applying the concept of Stream Cipher. The implementation provide three modes to elaborate the encryption process as well as the Quarter Round Function.  
-The 8-block key and the 2-block nonce are randomly generated, the counter increase for each encryption.
+Chacha20 is a Encryption Scheme applying the concept of Stream Cipher. This project targets to implement the Chacha20 algorithm and applies actual encryption on user input data. The requirements are:
+- [x] Implement the Chacha20 encryption algorithm in C/C++
+- [x] Include 5 test cases which clearly show the inputs and outputs in the console
+- [x] Clearly elaborate the encryption process step by step in the program
 
-# Installation and Execution
-The current version is only executable on Linux/MAC OS.  
+The implementation provide three modes to elaborate the encryption process as well as the Quarter Round Function. The 8-block key and the 2-block nonce are randomly generated, the counter increase for each encryption. For the explanation of Quarter Round Function, 8-block key, and the 2-block nonce, please refer to the [original official link](https://cr.yp.to/chacha/chacha-20080120.pdf) that explains Chacha20 in detailed.
+
+## Installation and Execution
+The current version is built for executing on Linux/MAC OS, to execute the program on Windows or other OS, please comment out all the statements under case 0 in the ```setting()``` [function](https://github.com/BanjiBear/Chacha20/blob/05544147822e854423f1306e81d971b9725eaef3/chacha20.c#L114). These statements are simply used to call the ```terminalSize.py``` file to maximize the window for better user experience.
+
 To compile the Chacha20, open the terminal and type
-```shell
+```bash
 cc chacha20.c -o chacha20 -std=c99 -w
 ```
 Simply follow the instruction given on the screen!  
 ***NOTE: Please make sure that the chacha20.c file is in the same directory as the terminalSize.py file***
 
 To execute the code, there are three modes:  
-```shell
+```bash
 ./chacha20 1
 ```
 Mode 1 simply reads in user-typed in plaintext then encrypt it into ciphertext.  
 
-```shell
+```bash
 ./chacha20 2
 ```
-Mode 2 server as a debug mode, it encrypts five test cases pre-defined in the code and encrypt the plaintexts.  
+Mode 2 serves as a debug mode, it encrypts five test cases pre-defined in the code and encrypt the plaintexts.  
 
-```shell
+```bash
 ./chacha20 3
 ```
 Mode 3 allows user input but print detailed encryption process, specifically, the output of the Quarter Round function (only the first round).  
 
-# Sample Output
+## Sample Output
 Mode 1 Input  
 ```
 Please type in the plaintext to be encrypted
@@ -175,11 +179,11 @@ Ciphertext         (hex): F4F00DB612B1BAB0D44E162FC2AA172BBC0CA6890EC00B8475BC53
 
 ```
 
-# Author
-[CHEN Yi pu(Tommy)](https://github.com/BanjiBear)
+## Implementation
+The Chacha20 implementation is written in C. The program architecture is loosely and poorly designed. Since this is an old project, currently not considering redesigning the program. Pull requests are welcome and any improvements made will be greatly appreciated.
 
-# Contributing
+## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change. Please make sure to update tests as appropriate.
 
-# License
+## License
 MIT
