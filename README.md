@@ -1,4 +1,4 @@
-# Chacha20
+# [2022] Chacha20
 Chacha20 is a Encryption Scheme applying the concept of Stream Cipher. This project targets to implement the Chacha20 algorithm and applies actual encryption on user input data. The requirements are:
 - [x] Implement the Chacha20 encryption algorithm in C/C++
 - [x] Include 5 test cases which clearly show the inputs and outputs in the console
